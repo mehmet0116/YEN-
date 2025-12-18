@@ -29,4 +29,7 @@
     <color name="color_green">#FF4CAF50</color>
     <color name="color_orange">#FFFF9800</color>
     <color name="color_purple">#FF9C27B0</color>
+    
+    <!-- Launcher icon -->
+    <color name="ic_launcher_background">#FFF3E0</color>
 </resources>

@@ -114,8 +114,9 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         speakMessage(message)
         showToast("${game.title} başlatılıyor...")
         
-        // Here you would normally start the specific game activity
-        // For now, just show a message
+        // Launch WebView with HTML content
+        val intent = android.content.Intent(this, WebViewActivity::class.java)
+        startActivity(intent)
     }
     
     override fun onInit(status: Int) {

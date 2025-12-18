@@ -82,4 +82,7 @@
     <string name="parent_section">Ebeveyn Köşesi</string>
     <string name="progress">İlerleme</string>
     <string name="achievements">Başarılar</string>
+    
+    <!-- WebView -->
+    <string name="web_content">Eğitici İçerik</string>
 </resources>
