@@ -1,0 +1,4679 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mete'nin Eğitici Dünyası</title>
+    <style>
+        /* ===== CSS BAŞLANGIÇ ===== */
+        :root {
+            --primary-color: #FF9800;
+            --secondary-color: #4CAF50;
+            --accent-color: #2196F3;
+            --background-color: #FFF3E0;
+            --text-color: #333;
+            --night-bg: #1a1a2e;
+            --night-text: #e0e0e0;
+            --card-bg: #ffffff;
+            --shadow: 0 8px 16px rgba(0,0,0,0.1);
+            --radius: 20px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', cursive, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            transition: background-color 0.5s, color 0.5s;
+            user-select: none;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        body.night-mode {
+            background-color: var(--night-bg);
+            color: var(--night-text);
+        }
+
+        /* Hamburger Menu */
+        .menu-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: var(--primary-color);
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s;
+        }
+
+        .menu-btn:active {
+            transform: scale(0.9);
+        }
+
+        .menu-btn span {
+            display: block;
+            width: 30px;
+            height: 4px;
+            background: white;
+            margin: 3px 0;
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
+        .menu-btn.open span:nth-child(1) {
+            transform: rotate(45deg) translate(7px, 7px);
+        }
+        .menu-btn.open span:nth-child(2) {
+            opacity: 0;
+        }
+        .menu-btn.open span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 280px;
+            height: 100%;
+            background: white;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            transition: 0.3s;
+            z-index: 999;
+            padding-top: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-y: auto;
+            padding-bottom: 50px;
+        }
+
+        body.night-mode .sidebar {
+            background: #16213e;
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar button {
+            width: 80%;
+            padding: 15px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 15px;
+            background: var(--accent-color);
+            color: white;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: 'Comic Neue', cursive;
+            box-shadow: 0 4px 0 #1976D2;
+            transition: transform 0.1s, box-shadow 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 10px;
+        }
+
+        .sidebar button:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #1976D2;
+        }
+
+        /* Main Container */
+        .container {
+            padding: 20px;
+            padding-top: 100px;
+            text-align: center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .welcome-section {
+            margin-bottom: 40px;
+            animation: bounceIn 1s;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: var(--primary-color);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
+            font-family: 'Fredoka One', cursive;
+        }
+
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 5px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            margin-bottom: 10px;
+            background-color: #fff;
+            object-fit: cover;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .profile-img:hover {
+            transform: scale(1.05);
+        }
+
+        .speech-bubble {
+            background: white;
+            padding: 15px;
+            border-radius: 20px;
+            position: relative;
+            margin: 20px auto;
+            max-width: 80%;
+            box-shadow: var(--shadow);
+            font-size: 1.2em;
+            line-height: 1.4;
+            animation: fadeIn 0.5s;
+        }
+
+        body.night-mode .speech-bubble {
+            background: #333;
+            color: white;
+        }
+
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 10px;
+            border-style: solid;
+            border-color: transparent transparent white transparent;
+        }
+
+        body.night-mode .speech-bubble::after {
+            border-color: transparent transparent #333 transparent;
+        }
+
+        /* Categories Grid */
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 15px;
+            width: 100%;
+            padding: 10px;
+            max-width: 900px;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 20px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            aspect-ratio: 1;
+            border: 3px solid transparent;
+        }
+
+        body.night-mode .category-card {
+            background: #16213e;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.2);
+        }
+
+        .category-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .category-title {
+            font-size: 1em;
+            font-weight: bold;
+            color: var(--text-color);
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        body.night-mode .category-title {
+            color: var(--night-text);
+        }
+
+        /* Game Area */
+        #game-area {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--background-color);
+            z-index: 1500;
+            flex-direction: column;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+
+        body.night-mode #game-area {
+            background: var(--night-bg);
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #ff5252;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: transform 0.2s;
+        }
+
+        .back-btn:active {
+            transform: scale(0.95);
+        }
+
+        .game-content {
+            margin-top: 60px;
+            text-align: center;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            padding-bottom: 50px;
+        }
+
+        /* Drawing Area */
+        #drawing-area {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 2000;
+            flex-direction: column;
+        }
+
+        #canvas {
+            flex: 1;
+            touch-action: none;
+            background: #fff;
+            cursor: crosshair;
+            width: 100%;
+            height: calc(100% - 70px);
+        }
+
+        .drawing-controls {
+            padding: 10px;
+            background: #f0f0f0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            height: 70px;
+        }
+
+        .color-picker {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .color-picker:hover {
+            transform: scale(1.2);
+        }
+
+        /* Animations */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); opacity: 1; }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Modal Windows */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 3000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+            animation: bounceIn 0.5s;
+        }
+
+        body.night-mode .modal-content {
+            background: #16213e;
+            color: white;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+            margin: 10px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .close-btn {
+            background: #ff5252;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .close-btn:hover {
+            background: #ff0000;
+        }
+
+        /* Game-specific styles */
+        .letter-display {
+            font-size: 150px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 20px 0;
+            text-shadow: 4px 4px 0px rgba(0,0,0,0.1);
+        }
+
+        .word-image {
+            width: 200px;
+            height: 200px;
+            background-color: #ddd;
+            margin: 20px auto;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+        }
+
+        .nav-btn {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-size: 1.2em;
+            margin: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #1565C0;
+            transition: transform 0.1s, box-shadow 0.1s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .nav-btn:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+
+        /* Piano */
+        .piano {
+            display: flex;
+            flex-direction: column;
+            background: #333;
+            padding: 20px;
+            border-radius: 20px;
+            margin: 20px auto;
+            width: 80%;
+            max-width: 400px;
+            user-select: none;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        .key {
+            width: 100%;
+            height: 50px;
+            background: white;
+            border: 1px solid #ccc;
+            margin: 2px 0;
+            border-radius: 10px;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding-left: 20px;
+            font-weight: bold;
+            box-shadow: 0 4px 4px rgba(0,0,0,0.1);
+            font-size: 1.2em;
+            transition: transform 0.1s, background 0.1s;
+        }
+        .key:active, .key.active {
+            background: #eee;
+            transform: scale(0.98);
+            box-shadow: none;
+        }
+        .key.black {
+            background: black;
+            color: white;
+            height: 30px;
+            width: 60%;
+            margin-top: -17px;
+            margin-bottom: -17px;
+            z-index: 2;
+            border: 2px solid #555;
+            align-self: flex-end;
+            border-radius: 10px 0 0 10px;
+        }
+
+        /* Shapes */
+        .shape-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            padding-bottom: 50px;
+        }
+        .shape-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .shape-item:hover {
+            transform: scale(1.1);
+        }
+        .shape {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .circle { background: #F44336; border-radius: 50%; }
+        .square { background: #2196F3; }
+        .triangle {
+            width: 0; height: 0;
+            background: transparent;
+            border-left: 50px solid transparent;
+            border-right: 50px solid transparent;
+            border-bottom: 100px solid #4CAF50;
+            box-shadow: none;
+            filter: drop-shadow(0 4px 4px rgba(0,0,0,0.2));
+        }
+        .rectangle { width: 140px; height: 80px; background: #FF9800; }
+        .star {
+            background: #FFEB3B;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            box-shadow: none;
+            filter: drop-shadow(0 4px 4px rgba(0,0,0,0.2));
+        }
+
+        /* Story Cards */
+        .story-card {
+            background: white;
+            padding: 20px;
+            margin: 10px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            transition: 0.3s;
+        }
+        .story-card:hover {
+            transform: translateX(10px);
+            background: #f9f9f9;
+        }
+        .story-icon {
+            font-size: 2.5em;
+            margin-right: 15px;
+        }
+        body.night-mode .story-card {
+            background: #2a2a40;
+            color: white;
+        }
+        body.night-mode .story-card:hover {
+            background: #323250;
+        }
+
+        /* Colors Grid */
+        .color-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .color-item {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: transform 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+            font-size: 1.2em;
+            border: 4px solid white;
+        }
+        .color-item:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        /* Grid Container */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            padding: 10px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .grid-card {
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        body.night-mode .grid-card {
+            background: #2a2a40;
+        }
+        .grid-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+        .grid-icon {
+            font-size: 4em;
+            margin-bottom: 10px;
+        }
+        .grid-title {
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        /* Math Game */
+        .math-question {
+            font-size: 4em;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 20px 0;
+        }
+        .math-options {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .math-option {
+            width: 80px;
+            height: 80px;
+            background: var(--accent-color);
+            color: white;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #1565C0;
+        }
+        .math-option:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+
+        /* Word Puzzle */
+        .word-puzzle-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .word-letters {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .letter-box {
+            width: 60px;
+            height: 60px;
+            border: 3px solid var(--primary-color);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            font-weight: bold;
+            background: white;
+        }
+        .letter-box.empty {
+            background: #eee;
+            color: transparent;
+        }
+
+        /* Balloon Game */
+        #balloon-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            background: skyblue;
+            overflow: hidden;
+            border-radius: 15px;
+            cursor: crosshair;
+        }
+        .balloon {
+            position: absolute;
+            width: 50px;
+            height: 70px;
+            background: red;
+            border-radius: 50%;
+            bottom: -100px;
+            animation: floatUp 4s linear infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: white;
+            box-shadow: inset -5px -5px 10px rgba(0,0,0,0.1);
+        }
+        .balloon::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 20px;
+            background: rgba(0,0,0,0.3);
+        }
+        @keyframes floatUp {
+            0% { bottom: -100px; transform: translateX(0); }
+            25% { transform: translateX(10px); }
+            50% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+            100% { bottom: 120%; transform: translateX(0); }
+        }
+
+        /* Tic Tac Toe */
+        .xox-board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(3, 100px);
+            gap: 10px;
+            margin: 20px auto;
+            background: #333;
+            padding: 10px;
+            border-radius: 10px;
+            width: fit-content;
+        }
+        .xox-cell {
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .xox-cell:hover {
+            background: #eee;
+        }
+
+        /* Clock */
+        .clock-face {
+            width: 250px;
+            height: 250px;
+            border: 10px solid #333;
+            border-radius: 50%;
+            position: relative;
+            margin: 20px auto;
+            background: white;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        .clock-center {
+            width: 15px;
+            height: 15px;
+            background: #333;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
+        .hand {
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform-origin: bottom center;
+            background: #333;
+            border-radius: 5px;
+            transition: transform 0.5s cubic-bezier(0.4, 2.08, 0.55, 0.44);
+        }
+        .hour-hand {
+            width: 8px;
+            height: 70px;
+            background: black;
+        }
+        .minute-hand {
+            width: 4px;
+            height: 100px;
+            background: #555;
+        }
+        .clock-number {
+            position: absolute;
+            font-size: 1.5em;
+            font-weight: bold;
+            text-align: center;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+        }
+
+        /* Solar System */
+        .solar-system {
+            display: flex;
+            overflow-x: auto;
+            gap: 20px;
+            padding: 20px;
+            background: #0b0b1a;
+            border-radius: 20px;
+            align-items: center;
+        }
+        .planet-card {
+            min-width: 150px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .planet-card:hover {
+            transform: scale(1.1);
+        }
+        .planet-visual {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+            box-shadow: inset -10px -10px 20px rgba(0,0,0,0.5);
+        }
+
+        /* Profession Cards */
+        .profession-card {
+            background: white;
+            border: 2px solid #eee;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .profession-card:hover {
+            background: #e3f2fd;
+            transform: translateY(-5px);
+        }
+        .profession-img {
+            font-size: 4em;
+        }
+
+        /* Pet Game */
+        .pet-container {
+            background: #fff3e0;
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+        }
+        body.night-mode .pet-container {
+            background: #2a2a40;
+        }
+        .pet-avatar {
+            font-size: 8em;
+            margin: 20px;
+            animation: bounce 2s infinite;
+        }
+        .pet-stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .stat-box {
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            width: 80px;
+        }
+        body.night-mode .stat-box {
+            background: #333;
+        }
+        .stat-value {
+            height: 10px;
+            background: #eee;
+            border-radius: 5px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+        body.night-mode .stat-value {
+            background: #555;
+        }
+        .stat-fill {
+            height: 100%;
+            background: #4CAF50;
+            width: 100%;
+            transition: width 0.3s;
+        }
+        .pet-actions {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Routine */
+        .routine-list {
+            text-align: left;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .routine-item {
+            background: white;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: 0.3s;
+        }
+        body.night-mode .routine-item {
+            background: #2a2a40;
+        }
+        .routine-item.completed {
+            background: #E8F5E9;
+            text-decoration: line-through;
+            opacity: 0.8;
+        }
+        body.night-mode .routine-item.completed {
+            background: #1b5e20;
+        }
+        .routine-checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #4CAF50;
+            border-radius: 50%;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .routine-item.completed .routine-checkbox::after {
+            content: '✓';
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        /* Badges */
+        .badge-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            padding: 10px;
+        }
+        .badge-card {
+            background: white;
+            padding: 10px;
+            border-radius: 15px;
+            opacity: 0.5;
+            filter: grayscale(100%);
+            transition: 0.3s;
+            text-align: center;
+            cursor: pointer;
+        }
+        body.night-mode .badge-card {
+            background: #2a2a40;
+        }
+        .badge-card.unlocked {
+            opacity: 1;
+            filter: grayscale(0%);
+            background: #FFF8E1;
+            box-shadow: 0 4px 8px rgba(255, 193, 7, 0.3);
+        }
+        body.night-mode .badge-card.unlocked {
+            background: #5d4037;
+        }
+        .badge-icon {
+            font-size: 3em;
+        }
+
+        /* Pattern Game */
+        .pattern-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+            font-size: 3em;
+            flex-wrap: wrap;
+        }
+        .pattern-slot {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .pattern-options {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        /* Sorting Game */
+        .sorting-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .sorting-basket {
+            width: 150px;
+            height: 200px;
+            border: 4px dashed #ccc;
+            border-radius: 0 0 20px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            padding-bottom: 10px;
+            background: rgba(255,255,255,0.5);
+            position: relative;
+            margin: 10px;
+        }
+        .sorting-label {
+            font-weight: bold;
+            margin-bottom: 10px;
+            background: white;
+            padding: 5px 10px;
+            border-radius: 10px;
+        }
+        .sorting-item {
+            font-size: 5em;
+            margin: 20px;
+            cursor: pointer;
+            animation: bounce 2s infinite;
+        }
+
+        /* Odd One Out */
+        .odd-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .odd-item {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 4em;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        body.night-mode .odd-item {
+            background: #2a2a40;
+        }
+        .odd-item:active {
+            transform: scale(0.9);
+        }
+
+        /* Sentence Game */
+        .sentence-container {
+            font-size: 1.5em;
+            margin: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        body.night-mode .sentence-container {
+            background: #2a2a40;
+        }
+        .missing-word {
+            color: var(--primary-color);
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        /* Maze Game */
+        .maze-controls {
+            display: grid;
+            grid-template-columns: repeat(3, 60px);
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .maze-btn {
+            width: 60px;
+            height: 60px;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+        .maze-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 30px);
+            gap: 1px;
+            background: #333;
+            padding: 5px;
+            border-radius: 5px;
+            margin: 0 auto;
+            width: fit-content;
+        }
+        .maze-cell {
+            width: 30px;
+            height: 30px;
+            background: white;
+        }
+        .maze-wall { background: #555; }
+        .maze-player { background: var(--primary-color); border-radius: 50%; }
+        .maze-goal { background: var(--secondary-color); }
+
+        /* Sound Game */
+        .sound-btn {
+            font-size: 5em;
+            background: white;
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px auto;
+            box-shadow: 0 0 20px rgba(33, 150, 243, 0.3);
+            cursor: pointer;
+            animation: pulse 2s infinite;
+        }
+
+        /* Memory Game */
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            max-width: 500px;
+            margin: 20px auto;
+        }
+        .memory-card {
+            width: 80px;
+            height: 80px;
+            background: var(--accent-color);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .memory-card.flipped {
+            background: white;
+            transform: rotateY(180deg);
+        }
+
+        /* Quiz Game */
+        .quiz-question {
+            font-size: 1.5em;
+            margin: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .quiz-option {
+            background: white;
+            padding: 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .quiz-option:hover {
+            background: #e3f2fd;
+            transform: translateX(10px);
+        }
+
+        /* Vegetables */
+        .vegetable-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            padding: 10px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .vegetable-card {
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .vegetable-card:hover {
+            transform: translateY(-5px);
+        }
+        .vegetable-icon {
+            font-size: 4em;
+            margin-bottom: 10px;
+        }
+
+        /* Months */
+        .months-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .month-card {
+            background: white;
+            padding: 10px 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .month-card:hover {
+            background: #e3f2fd;
+            transform: scale(1.05);
+        }
+
+        /* Music Notes */
+        .notes-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .note-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 3em;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: 0.3s;
+        }
+        .note-card:hover {
+            transform: scale(1.1);
+            background: #e3f2fd;
+        }
+
+        /* Countries */
+        .countries-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .country-card {
+            background: white;
+            padding: 15px;
+            border-radius: 15px;
+            width: 120px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .country-card:hover {
+            transform: translateY(-5px);
+        }
+        .country-flag {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        /* Addition/Subtraction */
+        .operation-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0;
+        }
+        .operation-display {
+            font-size: 4em;
+            margin: 20px;
+            color: var(--primary-color);
+        }
+        .operation-options {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* Alphabet Game */
+        .alphabet-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .alphabet-card {
+            width: 50px;
+            height: 50px;
+            background: var(--accent-color);
+            color: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .alphabet-card:hover {
+            transform: scale(1.1);
+            background: var(--primary-color);
+        }
+
+        /* Puzzle Game */
+        .puzzle-container {
+            width: 300px;
+            height: 300px;
+            border: 2px solid #333;
+            border-radius: 10px;
+            margin: 20px auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 2px;
+            background: #333;
+        }
+        .puzzle-piece {
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            cursor: pointer;
+        }
+        .puzzle-piece.empty {
+            background: #ddd;
+        }
+
+        /* Food Pyramid */
+        .pyramid-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0;
+        }
+        .pyramid-level {
+            display: flex;
+            justify-content: center;
+            margin: 5px 0;
+        }
+        .pyramid-item {
+            background: white;
+            padding: 10px;
+            margin: 0 5px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: center;
+            min-width: 80px;
+        }
+
+        /* Seasons Activities */
+        .season-activities {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .activity-card {
+            background: white;
+            padding: 15px;
+            border-radius: 15px;
+            width: 150px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .activity-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Number Line */
+        .number-line {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 30px 0;
+            overflow-x: auto;
+            padding: 10px;
+        }
+        .number-point {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 5px;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        /* Weather */
+        .weather-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .weather-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            width: 120px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .weather-card:hover {
+            transform: scale(1.05);
+        }
+        .weather-icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        /* Family */
+        .family-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .family-card {
+            background: white;
+            padding: 15px;
+            border-radius: 15px;
+            width: 120px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .family-card:hover {
+            transform: translateY(-5px);
+        }
+        .family-icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        /* Clothing */
+        .clothing-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .clothing-card {
+            background: white;
+            padding: 15px;
+            border-radius: 15px;
+            width: 120px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .clothing-card:hover {
+            transform: translateY(-5px);
+        }
+        .clothing-icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        /* Daily Routines */
+        .daily-routines {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 400px;
+            margin: 20px auto;
+        }
+        .routine-time {
+            background: white;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .routine-time-icon {
+            font-size: 2em;
+        }
+
+        /* Achievement Stars */
+        .stars-container {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin: 20px 0;
+        }
+        .star-icon {
+            font-size: 2em;
+            color: #FFD700;
+        }
+        .star-icon.empty {
+            color: #ddd;
+        }
+
+        /* Pet Actions */
+        .pet-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: white;
+            border: none;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            width: 80px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .pet-btn:active {
+            transform: scale(0.95);
+        }
+        .pet-btn span {
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+
+        /* General Headers */
+        h2 {
+            font-size: 2.2em;
+            color: var(--primary-color);
+            margin: 20px 0;
+            font-family: 'Fredoka One', cursive;
+        }
+        h3 {
+            font-size: 1.5em;
+            color: var(--secondary-color);
+            margin: 15px 0;
+        }
+        p {
+            font-size: 1.1em;
+            line-height: 1.5;
+            margin: 10px 0;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Parent Gate */
+        #parent-gate {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 4000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+        }
+        .gate-input {
+            font-size: 2em;
+            padding: 10px;
+            width: 100px;
+            text-align: center;
+            margin: 20px;
+            border-radius: 10px;
+            border: none;
+        }
+
+        /* Story Player */
+        .story-player {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.2);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            z-index: 2000;
+            border-radius: 20px 20px 0 0;
+        }
+        body.night-mode .story-player {
+            background: #16213e;
+            color: white;
+        }
+        .progress-container {
+            width: 100%;
+            height: 10px;
+            background: #eee;
+            border-radius: 5px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background: var(--primary-color);
+            width: 0%;
+            transition: width 0.5s linear;
+        }
+        .story-controls {
+            display: flex;
+            gap: 20px;
+        }
+        .story-time {
+            font-size: 0.9em;
+            color: #666;
+        }
+        body.night-mode .story-time {
+            color: #aaa;
+        }
+
+        /* Loading Animation */
+        .loader {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--secondary-color);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            z-index: 5000;
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 120px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -60px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .categories {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .letter-display {
+                font-size: 120px;
+            }
+            h1 {
+                font-size: 2em;
+            }
+            h2 {
+                font-size: 1.8em;
+            }
+            .sidebar {
+                width: 250px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .categories {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .sidebar button {
+                width: 90%;
+                font-size: 1em;
+            }
+            .letter-display {
+                font-size: 100px;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #FF8C00;
+        }
+        /* ===== CSS SONU ===== */
+    </style>
+</head>
+<body>
+
+<!-- Hamburger Menu Button -->
+<button class="menu-btn" onclick="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+</button>
+
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+    <button onclick="showSection('home')">🏠 Ana Sayfa</button>
+    <button onclick="showSection('letters')">🅰️ Harfleri Öğren</button>
+    <button onclick="showSection('numbers')">🔢 Sayıları Öğren</button>
+    <button onclick="showSection('shapes')">🔶 Şekiller</button>
+    <button onclick="showSection('colors')">🌈 Renkler</button>
+    <button onclick="showSection('animals')">🐾 Hayvanlar</button>
+    <button onclick="showSection('fruits')">🍎 Meyveler</button>
+    <button onclick="showSection('vegetables')">🥦 Sebzeler</button>
+    <button onclick="showSection('body')">👤 Vücudumuz</button>
+    <button onclick="showSection('family')">👨‍👩‍👧‍👦 Ailemiz</button>
+    <button onclick="showSection('clothing')">👕 Giysiler</button>
+    <button onclick="showSection('house')">🏠 Evimiz</button>
+    <button onclick="showSection('transport')">🚗 Taşıtlar</button>
+    <button onclick="showSection('professions')">👨‍⚕️ Meslekler</button>
+    <button onclick="showSection('seasons')">🍂 Mevsimler</button>
+    <button onclick="showSection('weather')">☀️ Hava Durumu</button>
+    <button onclick="showSection('days')">📅 Günler</button>
+    <button onclick="showSection('months')">🗓️ Aylar</button>
+    <button onclick="showSection('clock')">⏰ Saatler</button>
+    <button onclick="showSection('solar-system')">🪐 Güneş Sistemi</button>
+    <button onclick="showSection('countries')">🌍 Ülkeler</button>
+    <button onclick="showSection('music')">🎵 Müzik</button>
+    <button onclick="showSection('sports')">⚽ Sporlar</button>
+    <button onclick="showSection('emotions')">😊 Duygular</button>
+    <button onclick="showSection('piano')">🎹 Piyano</button>
+    <button onclick="showSection('drawing')">🎨 Çizim Yap</button>
+    <button onclick="showSection('stories')">📚 Masallar</button>
+    <button onclick="showSection('games')">🎮 Oyunlar</button>
+    <button onclick="showSection('pet')">🐶 Sanal Hayvanım</button>
+    <button onclick="showSection('routine')">📅 Günlük Rutinim</button>
+    <button onclick="showSection('badges')">🏆 Rozetlerim</button>
+    <button onclick="openSettings()">⚙️ Ayarlar</button>
+</div>
+
+<!-- Main Content -->
+<div class="container" id="main-container">
+    <div class="welcome-section">
+        <!-- Mete's Profile Image -->
+        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23FFEB3B'/><circle cx='35' cy='40' r='5' fill='%23333'/><circle cx='65' cy='40' r='5' fill='%23333'/><path d='M 30 60 Q 50 80 70 60' stroke='%23333' stroke-width='3' fill='none'/></svg>" alt="Mete" class="profile-img" onclick="playGreeting()">
+        <div class="speech-bubble" id="mascot-text">
+            Merhaba Mete! Bugün neler öğrenmek istersin? Harika bir gün seni bekliyor! 🌟
+        </div>
+    </div>
+
+    <div class="categories">
+        <!-- Top row -->
+        <div class="category-card" onclick="showSection('letters')" style="border-bottom: 5px solid #FF4081;">
+            <div class="category-icon">🅰️</div>
+            <div class="category-title">Harfler</div>
+        </div>
+        <div class="category-card" onclick="showSection('numbers')" style="border-bottom: 5px solid #00BCD4;">
+            <div class="category-icon">🔢</div>
+            <div class="category-title">Sayılar</div>
+        </div>
+        <div class="category-card" onclick="showSection('colors')" style="border-bottom: 5px solid #FFC107;">
+            <div class="category-icon">🌈</div>
+            <div class="category-title">Renkler</div>
+        </div>
+        <div class="category-card" onclick="showSection('shapes')" style="border-bottom: 5px solid #FF9800;">
+            <div class="category-icon">🔶</div>
+            <div class="category-title">Şekiller</div>
+        </div>
+        <div class="category-card" onclick="showSection('animals')" style="border-bottom: 5px solid #4CAF50;">
+            <div class="category-icon">🐾</div>
+            <div class="category-title">Hayvanlar</div>
+        </div>
+        <div class="category-card" onclick="showSection('fruits')" style="border-bottom: 5px solid #E91E63;">
+            <div class="category-icon">🍎</div>
+            <div class="category-title">Meyveler</div>
+        </div>
+        <div class="category-card" onclick="showSection('vegetables')" style="border-bottom: 5px solid #795548;">
+            <div class="category-icon">🥦</div>
+            <div class="category-title">Sebzeler</div>
+        </div>
+        <div class="category-card" onclick="showSection('body')" style="border-bottom: 5px solid #607D8B;">
+            <div class="category-icon">👤</div>
+            <div class="category-title">Vücudumuz</div>
+        </div>
+        <div class="category-card" onclick="showSection('family')" style="border-bottom: 5px solid #009688;">
+            <div class="category-icon">👨‍👩‍👧‍👦</div>
+            <div class="category-title">Ailemiz</div>
+        </div>
+        <div class="category-card" onclick="showSection('house')" style="border-bottom: 5px solid #3F51B5;">
+            <div class="category-icon">🏠</div>
+            <div class="category-title">Evimiz</div>
+        </div>
+        <div class="category-card" onclick="showSection('transport')" style="border-bottom: 5px solid #673AB7;">
+            <div class="category-icon">🚗</div>
+            <div class="category-title">Taşıtlar</div>
+        </div>
+        <div class="category-card" onclick="showSection('professions')" style="border-bottom: 5px solid #FF5722;">
+            <div class="category-icon">👨‍⚕️</div>
+            <div class="category-title">Meslekler</div>
+        </div>
+        <div class="category-card" onclick="showSection('seasons')" style="border-bottom: 5px solid #009688;">
+            <div class="category-icon">🍂</div>
+            <div class="category-title">Mevsimler</div>
+        </div>
+        <div class="category-card" onclick="showSection('weather')" style="border-bottom: 5px solid #2196F3;">
+            <div class="category-icon">☀️</div>
+            <div class="category-title">Hava Durumu</div>
+        </div>
+        <div class="category-card" onclick="showSection('days')" style="border-bottom: 5px solid #9C27B0;">
+            <div class="category-icon">📅</div>
+            <div class="category-title">Günler</div>
+        </div>
+        <div class="category-card" onclick="showSection('months')" style="border-bottom: 5px solid #FF9800;">
+            <div class="category-icon">🗓️</div>
+            <div class="category-title">Aylar</div>
+        </div>
+        <div class="category-card" onclick="showSection('clock')" style="border-bottom: 5px solid #4CAF50;">
+            <div class="category-icon">⏰</div>
+            <div class="category-title">Saatler</div>
+        </div>
+        <div class="category-card" onclick="showSection('solar-system')" style="border-bottom: 5px solid #9C27B0;">
+            <div class="category-icon">🪐</div>
+            <div class="category-title">Güneş Sistemi</div>
+        </div>
+        <div class="category-card" onclick="showSection('countries')" style="border-bottom: 5px solid #FF5722;">
+            <div class="category-icon">🌍</div>
+            <div class="category-title">Ülkeler</div>
+        </div>
+        <div class="category-card" onclick="showSection('music')" style="border-bottom: 5px solid #E91E63;">
+            <div class="category-icon">🎵</div>
+            <div class="category-title">Müzik</div>
+        </div>
+        <div class="category-card" onclick="showSection('sports')" style="border-bottom: 5px solid #FFC107;">
+            <div class="category-icon">⚽</div>
+            <div class="category-title">Sporlar</div>
+        </div>
+        <div class="category-card" onclick="showSection('emotions')" style="border-bottom: 5px solid #9C27B0;">
+            <div class="category-icon">😊</div>
+            <div class="category-title">Duygular</div>
+        </div>
+        <div class="category-card" onclick="showSection('clothing')" style="border-bottom: 5px solid #795548;">
+            <div class="category-icon">👕</div>
+            <div class="category-title">Giysiler</div>
+        </div>
+        <div class="category-card" onclick="showSection('piano')" style="border-bottom: 5px solid #2196F3;">
+            <div class="category-icon">🎹</div>
+            <div class="category-title">Piyano</div>
+        </div>
+        <div class="category-card" onclick="showSection('drawing')" style="border-bottom: 5px solid #FF9800;">
+            <div class="category-icon">🎨</div>
+            <div class="category-title">Çizim Yap</div>
+        </div>
+        <div class="category-card" onclick="showSection('stories')" style="border-bottom: 5px solid #FF5722;">
+            <div class="category-icon">📚</div>
+            <div class="category-title">Masallar</div>
+        </div>
+        <div class="category-card" onclick="showSection('games')" style="border-bottom: 5px solid #9C27B0;">
+            <div class="category-icon">🎮</div>
+            <div class="category-title">Oyunlar</div>
+        </div>
+        <div class="category-card" onclick="showSection('pet')" style="border-bottom: 5px solid #4CAF50;">
+            <div class="category-icon">🐶</div>
+            <div class="category-title">Sanal Hayvanım</div>
+        </div>
+        <div class="category-card" onclick="showSection('routine')" style="border-bottom: 5px solid #00BCD4;">
+            <div class="category-icon">📅</div>
+            <div class="category-title">Günlük Rutinim</div>
+        </div>
+        <div class="category-card" onclick="showSection('badges')" style="border-bottom: 5px solid #FFC107;">
+            <div class="category-icon">🏆</div>
+            <div class="category-title">Rozetlerim</div>
+        </div>
+    </div>
+</div>
+
+<!-- Game/Content Area -->
+<div id="game-area">
+    <button class="back-btn" onclick="closeGameArea()"><span>❌</span> Kapat</button>
+    <div class="game-content" id="dynamic-content">
+        <!-- Content will be injected here -->
+    </div>
+</div>
+
+<!-- Drawing Area -->
+<div id="drawing-area">
+    <div class="drawing-controls">
+        <button class="back-btn" style="position: static;" onclick="closeDrawing()">❌</button>
+        <div class="color-picker" style="background: black;" onclick="setColor('black')"></div>
+        <div class="color-picker" style="background: red;" onclick="setColor('red')"></div>
+        <div class="color-picker" style="background: blue;" onclick="setColor('blue')"></div>
+        <div class="color-picker" style="background: green;" onclick="setColor('green')"></div>
+        <div class="color-picker" style="background: yellow;" onclick="setColor('yellow')"></div>
+        <div class="color-picker" style="background: purple;" onclick="setColor('purple')"></div>
+        <div class="color-picker" style="background: orange;" onclick="setColor('orange')"></div>
+        <div class="color-picker" style="background: pink;" onclick="setColor('pink')"></div>
+        <div class="color-picker" style="background: brown;" onclick="setColor('brown')"></div>
+        <button onclick="clearCanvas()" style="padding: 5px 10px; border-radius: 5px; border: 1px solid #ccc; background: white;">Temizle</button>
+        <button onclick="saveDrawing()" style="padding: 5px 10px; border-radius: 5px; border: 1px solid #ccc; background: #4CAF50; color: white;">Kaydet</button>
+        <label for="brush-size" id="brush-size-label">Boyut: 5</label>
+        <input aria-labelledby="brush-size-label" type="range" id="brush-size" min="1" max="20" value="5" onchange="changeBrushSize(this.value)">
+    </div>
+    <canvas id="canvas"></canvas>
+</div>
+
+<!-- Settings Modal -->
+<div class="modal" id="settings-modal">
+    <div class="modal-content">
+        <h2>Ayarlar</h2>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0;">
+            <span>Gece Modu</span>
+            <label class="switch">
+                <input type="checkbox" id="night-mode-toggle" onchange="toggleNightMode()">
+                <span class="slider"></span>
+            </label>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0;">
+            <span>Ses Efektleri</span>
+            <label class="switch">
+                <input type="checkbox" id="sound-toggle" checked>
+                <span class="slider"></span>
+            </label>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0;">
+            <span>Konuşma Sesleri</span>
+            <label class="switch">
+                <input type="checkbox" id="voice-toggle" checked>
+                <span class="slider"></span>
+            </label>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0;">
+            <span>Animasyonlar</span>
+            <label class="switch">
+                <input type="checkbox" id="animation-toggle" checked>
+                <span class="slider"></span>
+            </label>
+        </div>
+        <button class="close-btn" onclick="closeSettings()">Kapat</button>
+    </div>
+</div>
+
+<!-- Parent Gate Modal -->
+<div id="parent-gate">
+    <h2>👨‍👩‍👧‍👦 Ebeveyn Kontrolü</h2>
+    <p>Bu bölümü görüntülemek için şifreyi giriniz</p>
+    <label for="gate-password" style="margin-bottom:4px;">Şifre</label>
+    <input aria-label="Şifre" type="password" class="gate-input" placeholder="Şifre" id="gate-password">
+    <button class="close-btn" onclick="checkGatePassword()">Tamam</button>
+</div>
+
+<!-- Notification -->
+<div class="notification" id="notification"></div>
+
+<!-- Story Player Container -->
+<div id="story-player" class="story-player">
+    <div style="font-weight: bold; font-size: 1.2em; margin-bottom: 10px;" id="story-title">Masal</div>
+    <div id="story-text" style="text-align: left; max-width: 700px;"></div>
+    <div class="progress-container" style="max-width: 700px;">
+        <div class="progress-bar" id="story-progress"></div>
+    </div>
+    <div class="story-controls">
+        <button class="nav-btn" onclick="prevStorySentence()">⏮ Geri</button>
+        <button class="nav-btn" id="story-playpause" onclick="toggleStoryPlay()">⏸ Durdur</button>
+        <button class="nav-btn" onclick="nextStorySentence()">İleri ⏭</button>
+        <button class="nav-btn" onclick="closeStoryPlayer()">Kapat ✖️</button>
+    </div>
+    <div class="story-time" id="story-time">0:00 / 0:00</div>
+</div>
+
+<script>
+// ===== JAVASCRIPT BAŞLANGIÇ =====
+// Global değişkenler
+let currentSection = 'home';
+let isNightMode = false;
+let isSoundOn = true;
+let isVoiceOn = true;
+let isAnimationOn = true;
+let achievements = [];
+let gameScores = {};
+let currentStory = '';
+let currentSentences = [];
+let currentSentenceIndex = 0;
+let storyInterval = null;
+let isStoryPlaying = false;
+let pianoAudioContext = null;
+let brushSize = 5;
+let drawColor = '#000000';
+let isDrawing = false;
+let lastX = 0;
+let lastY = 0;
+let canvas, ctx;
+let virtualPet = {
+    name: 'Patiliş',
+    type: '🐶',
+    hunger: 70,
+    happiness: 80,
+    energy: 60,
+    xp: 0,
+    level: 1
+};
+
+// Harfler ve kelimeler
+const alphabetData = [
+    { letter: 'A', word: 'Armut', emoji: '🍐' },
+    { letter: 'B', word: 'Balık', emoji: '🐟' },
+    { letter: 'C', word: 'Ceviz', emoji: '🌰' },
+    { letter: 'Ç', word: 'Çilek', emoji: '🍓' },
+    { letter: 'D', word: 'Dondurma', emoji: '🍦' },
+    { letter: 'E', word: 'Elma', emoji: '🍎' },
+    { letter: 'F', word: 'Fil', emoji: '🐘' },
+    { letter: 'G', word: 'Güneş', emoji: '☀️' },
+    { letter: 'Ğ', word: 'Ğ harfi', emoji: '🔤' },
+    { letter: 'H', word: 'Horoz', emoji: '🐓' },
+    { letter: 'I', word: 'Ihlamur', emoji: '🌿' },
+    { letter: 'İ', word: 'İnek', emoji: '🐄' },
+    { letter: 'J', word: 'Jeton', emoji: '🪙' },
+    { letter: 'K', word: 'Kalem', emoji: '✏️' },
+    { letter: 'L', word: 'Limon', emoji: '🍋' },
+    { letter: 'M', word: 'Mete', emoji: '👦' },
+    { letter: 'N', word: 'Nar', emoji: '🍈' },
+    { letter: 'O', word: 'Otobüs', emoji: '🚌' },
+    { letter: 'Ö', word: 'Ördek', emoji: '🦆' },
+    { letter: 'P', word: 'Papağan', emoji: '🦜' },
+    { letter: 'R', word: 'Robot', emoji: '🤖' },
+    { letter: 'S', word: 'Sarı', emoji: '🟡' },
+    { letter: 'Ş', word: 'Şapka', emoji: '🧢' },
+    { letter: 'T', word: 'Top', emoji: '⚽' },
+    { letter: 'U', word: 'Uçak', emoji: '✈️' },
+    { letter: 'Ü', word: 'Üzüm', emoji: '🍇' },
+    { letter: 'V', word: 'Vazo', emoji: '🏺' },
+    { letter: 'Y', word: 'Yıldız', emoji: '⭐' },
+    { letter: 'Z', word: 'Zürafa', emoji: '🦒' }
+];
+
+// Sayılar verisi
+const numbersData = [
+    { number: 1, word: 'Bir', emoji: '🔵' },
+    { number: 2, word: 'İki', emoji: '🟡🟡' },
+    { number: 3, word: 'Üç', emoji: '🔴🔴🔴' },
+    { number: 4, word: 'Dört', emoji: '🟢🟢🟢🟢' },
+    { number: 5, word: 'Beş', emoji: '🟠🟠🟠🟠🟠' },
+    { number: 6, word: 'Altı', emoji: '⚫⚫⚫⚫⚫⚫' },
+    { number: 7, word: 'Yedi', emoji: '⚪⚪⚪⚪⚪⚪⚪' },
+    { number: 8, word: 'Sekiz', emoji: '🟤🟤🟤🟤🟤🟤🟤🟤' },
+    { number: 9, word: 'Dokuz', emoji: '🟣🟣🟣🟣🟣🟣🟣🟣🟣' },
+    { number: 10, word: 'On', emoji: '🔟' }
+];
+
+// Renkler verisi
+const colorsData = [
+    { name: 'Kırmızı', value: '#FF0000', emoji: '🔴' },
+    { name: 'Mavi', value: '#0000FF', emoji: '🔵' },
+    { name: 'Sarı', value: '#FFFF00', emoji: '🟡' },
+    { name: 'Yeşil', value: '#00FF00', emoji: '🟢' },
+    { name: 'Turuncu', value: '#FFA500', emoji: '🟠' },
+    { name: 'Mor', value: '#800080', emoji: '🟣' },
+    { name: 'Pembe', value: '#FFC0CB', emoji: '🌸' },
+    { name: 'Kahverengi', value: '#8B4513', emoji: '🟤' },
+    { name: 'Siyah', value: '#000000', emoji: '⚫' },
+    { name: 'Beyaz', value: '#FFFFFF', emoji: '⚪' }
+];
+
+// Şekiller verisi
+const shapesData = [
+    { name: 'Daire', sides: 'Yuvarlak', emoji: '⭕' },
+    { name: 'Kare', sides: '4', emoji: '⬜' },
+    { name: 'Üçgen', sides: '3', emoji: '🔺' },
+    { name: 'Dikdörtgen', sides: '4', emoji: '📏' },
+    { name: 'Yıldız', sides: '5', emoji: '⭐' },
+    { name: 'Kalp', sides: 'Yuvarlak', emoji: '❤️' },
+    { name: 'Oval', sides: 'Yuvarlak', emoji: '🥚' },
+    { name: 'Beşgen', sides: '5', emoji: '⬟' },
+    { name: 'Altıgen', sides: '6', emoji: '⬢' },
+    { name: 'Küp', sides: '6', emoji: '🧊' }
+];
+
+// Hayvanlar verisi
+const animalsData = [
+    { name: 'Kedi', sound: 'Miyav', emoji: '🐱' },
+    { name: 'Köpek', sound: 'Hav Hav', emoji: '🐶' },
+    { name: 'Kuş', sound: 'Cik Cik', emoji: '🐦' },
+    { name: 'İnek', sound: 'Möö', emoji: '🐄' },
+    { name: 'Koyun', sound: 'Mee', emoji: '🐑' },
+    { name: 'At', sound: 'Aii', emoji: '🐴' },
+    { name: 'Aslan', sound: 'Kükreme', emoji: '🦁' },
+    { name: 'Fil', sound: 'Fiuu', emoji: '🐘' },
+    { name: 'Maymun', sound: 'Uu Uu', emoji: '🐒' },
+    { name: 'Kurbağa', sound: 'Vrak', emoji: '🐸' },
+    { name: 'Baykuş', sound: 'Uhuu', emoji: '🦉' },
+    { name: 'Arı', sound: 'Vız', emoji: '🐝' }
+];
+
+// Meyveler verisi
+const fruitsData = [
+    { name: 'Elma', color: 'Kırmızı/Yeşil', emoji: '🍎' },
+    { name: 'Muz', color: 'Sarı', emoji: '🍌' },
+    { name: 'Çilek', color: 'Kırmızı', emoji: '🍓' },
+    { name: 'Portakal', color: 'Turuncu', emoji: '🍊' },
+    { name: 'Üzüm', color: 'Mor/Yeşil', emoji: '🍇' },
+    { name: 'Karpuz', color: 'Yeşil/Kırmızı', emoji: '🍉' },
+    { name: 'Kavun', color: 'Sarı/Yeşil', emoji: '🍈' },
+    { name: 'Şeftali', color: 'Turuncu', emoji: '🍑' },
+    { name: 'Armut', color: 'Yeşil', emoji: '🍐' },
+    { name: 'Ananas', color: 'Sarı/Yeşil', emoji: '🍍' }
+];
+
+// Sebzeler verisi
+const vegetablesData = [
+    { name: 'Havuç', color: 'Turuncu', emoji: '🥕' },
+    { name: 'Domates', color: 'Kırmızı', emoji: '🍅' },
+    { name: 'Salatalık', color: 'Yeşil', emoji: '🥒' },
+    { name: 'Patates', color: 'Kahverengi', emoji: '🥔' },
+    { name: 'Soğan', color: 'Beyaz/Mor', emoji: '🧅' },
+    { name: 'Sarımsak', color: 'Beyaz', emoji: '🧄' },
+    { name: 'Brokoli', color: 'Yeşil', emoji: '🥦' },
+    { name: 'Marul', color: 'Yeşil', emoji: '🥬' },
+    { name: 'Biber', color: 'Kırmızı/Yeşil', emoji: '🫑' },
+    { name: 'Patlıcan', color: 'Mor', emoji: '🍆' }
+];
+
+// Vücut bölümleri
+const bodyPartsData = [
+    { name: 'Baş', emoji: '👤', function: 'Düşünür' },
+    { name: 'Göz', emoji: '👁️', function: 'Görür' },
+    { name: 'Kulak', emoji: '👂', function: 'Duyar' },
+    { name: 'Burun', emoji: '👃', function: 'Koklar' },
+    { name: 'Ağız', emoji: '👄', function: 'Yer/Konuşur' },
+    { name: 'El', emoji: '✋', function: 'Tutar' },
+    { name: 'Ayak', emoji: '🦶', function: 'Yürür' },
+    { name: 'Kalp', emoji: '❤️', function: 'Kan Pompalar' },
+    { name: 'Akciğer', emoji: '🫁', function: 'Nefes Alır' },
+    { name: 'Mide', emoji: '🍽️', function: 'Sindirir' }
+];
+
+// Aile üyeleri
+const familyData = [
+    { name: 'Anne', role: '👩', relation: 'Ebeveyn' },
+    { name: 'Baba', role: '👨', relation: 'Ebeveyn' },
+    { name: 'Kardeş', role: '👧', relation: 'Kardeş' },
+    { name: 'Dede', role: '👴', relation: 'Büyükbaba' },
+    { name: 'Nine', role: '👵', relation: 'Büyükanne' },
+    { name: 'Amca', role: '👨', relation: 'Baba kardeşi' },
+    { name: 'Teyze', role: '👩', relation: 'Anne kardeşi' },
+    { name: 'Kuzen', role: '🧒', relation: 'Kuzen' },
+    { name: 'Bebek', role: '👶', relation: 'Küçük kardeş' }
+];
+
+// Taşıtlar
+const transportData = [
+    { name: 'Araba', type: 'Kara', emoji: '🚗' },
+    { name: 'Otobüs', type: 'Kara', emoji: '🚌' },
+    { name: 'Tren', type: 'Kara', emoji: '🚂' },
+    { name: 'Uçak', type: 'Hava', emoji: '✈️' },
+    { name: 'Helikopter', type: 'Hava', emoji: '🚁' },
+    { name: 'Gemi', type: 'Deniz', emoji: '🚢' },
+    { name: 'Tekne', type: 'Deniz', emoji: '🚤' },
+    { name: 'Bisiklet', type: 'Kara', emoji: '🚲' },
+    { name: 'Motorsiklet', type: 'Kara', emoji: '🏍️' },
+    { name: 'Taksi', type: 'Kara', emoji: '🚕' }
+];
+
+// Meslekler
+const professionsData = [
+    { name: 'Doktor', tool: '💉', action: 'İyileştirir' },
+    { name: 'Öğretmen', tool: '📚', action: 'Öğretir' },
+    { name: 'Polis', tool: '👮', action: 'Korur' },
+    { name: 'İtfaiyeci', tool: '🚒', action: 'Söndürür' },
+    { name: 'Aşçı', tool: '👨‍🍳', action: 'Yemek Yapar' },
+    { name: 'Mimar', tool: '🏗️', action: 'Bina Tasarlar' },
+    { name: 'Astronot', tool: '🚀', action: 'Uzaya Gider' },
+    { name: 'Çiftçi', tool: '🚜', action: 'Yetiştirir' },
+    { name: 'Pilot', tool: '✈️', action: 'Uçak Kullanır' },
+    { name: 'Müzisyen', tool: '🎵', action: 'Müzik Yapar' }
+];
+
+// Mevsimler
+const seasonsData = [
+    { name: 'İlkbahar', months: 'Mart, Nisan, Mayıs', emoji: '🌼' },
+    { name: 'Yaz', months: 'Haziran, Temmuz, Ağustos', emoji: '☀️' },
+    { name: 'Sonbahar', months: 'Eylül, Ekim, Kasım', emoji: '🍂' },
+    { name: 'Kış', months: 'Aralık, Ocak, Şubat', emoji: '⛄' }
+];
+
+// Hava durumu
+const weatherData = [
+    { name: 'Güneşli', emoji: '☀️', clothing: 'Şapka, Gözlük' },
+    { name: 'Bulutlu', emoji: '☁️', clothing: 'Hafif Ceket' },
+    { name: 'Yağmurlu', emoji: '🌧️', clothing: 'Yağmurluk, Şemsiye' },
+    { name: 'Karlı', emoji: '❄️', clothing: 'Mont, Bere, Eldiven' },
+    { name: 'Rüzgarlı', emoji: '💨', clothing: 'Rüzgarlık' },
+    { name: 'Gökkuşağı', emoji: '🌈', clothing: 'Normal' },
+    { name: 'Fırtına', emoji: '⛈️', clothing: 'Evde Kal!' }
+];
+
+// Günler
+const daysData = [
+    { name: 'Pazartesi', order: 1, emoji: '📚' },
+    { name: 'Salı', order: 2, emoji: '🎨' },
+    { name: 'Çarşamba', order: 3, emoji: '⚽' },
+    { name: 'Perşembe', order: 4, emoji: '🎵' },
+    { name: 'Cuma', order: 5, emoji: '🎉' },
+    { name: 'Cumartesi', order: 6, emoji: '👨‍👩‍👧‍👦' },
+    { name: 'Pazar', order: 7, emoji: '🛌' }
+];
+
+// Aylar
+const monthsData = [
+    { name: 'Ocak', season: 'Kış', emoji: '⛄' },
+    { name: 'Şubat', season: 'Kış', emoji: '❤️' },
+    { name: 'Mart', season: 'İlkbahar', emoji: '🌼' },
+    { name: 'Nisan', season: 'İlkbahar', emoji: '🌧️' },
+    { name: 'Mayıs', season: 'İlkbahar', emoji: '🌹' },
+    { name: 'Haziran', season: 'Yaz', emoji: '☀️' },
+    { name: 'Temmuz', season: 'Yaz', emoji: '🏖️' },
+    { name: 'Ağustos', season: 'Yaz', emoji: '🍦' },
+    { name: 'Eylül', season: 'Sonbahar', emoji: '🍂' },
+    { name: 'Ekim', season: 'Sonbahar', emoji: '🎃' },
+    { name: 'Kasım', season: 'Sonbahar', emoji: '🍁' },
+    { name: 'Aralık', season: 'Kış', emoji: '🎄' }
+];
+
+// Ülkeler
+const countriesData = [
+    { name: 'Türkiye', capital: 'Ankara', flag: '🇹🇷' },
+    { name: 'Amerika', capital: 'Washington', flag: '🇺🇸' },
+    { name: 'Almanya', capital: 'Berlin', flag: '🇩🇪' },
+    { name: 'Fransa', capital: 'Paris', flag: '🇫🇷' },
+    { name: 'İtalya', capital: 'Roma', flag: '🇮🇹' },
+    { name: 'Japonya', capital: 'Tokyo', flag: '🇯🇵' },
+    { name: 'İngiltere', capital: 'Londra', flag: '🇬🇧' },
+    { name: 'Rusya', capital: 'Moskova', flag: '🇷🇺' },
+    { name: 'Çin', capital: 'Pekin', flag: '🇨🇳' },
+    { name: 'Brezilya', capital: 'Brasília', flag: '🇧🇷' }
+];
+
+// Müzik notaları
+const musicNotesData = [
+    { name: 'Do', symbol: 'C', emoji: '🎵' },
+    { name: 'Re', symbol: 'D', emoji: '🎶' },
+    { name: 'Mi', symbol: 'E', emoji: '🎼' },
+    { name: 'Fa', symbol: 'F', emoji: '🎹' },
+    { name: 'Sol', symbol: 'G', emoji: '🎸' },
+    { name: 'La', symbol: 'A', emoji: '🎻' },
+    { name: 'Si', symbol: 'B', emoji: '🥁' }
+];
+
+// Sporlar
+const sportsData = [
+    { name: 'Futbol', equipment: 'Top', emoji: '⚽' },
+    { name: 'Basketbol', equipment: 'Basketbol Topu', emoji: '🏀' },
+    { name: 'Yüzme', equipment: 'Mayo', emoji: '🏊' },
+    { name: 'Tenis', equipment: 'Raket', emoji: '🎾' },
+    { name: 'Voleybol', equipment: 'Voleybol Topu', emoji: '🏐' },
+    { name: 'Bisiklet', equipment: 'Bisiklet', emoji: '🚴' },
+    { name: 'Atletizm', equipment: 'Spor Ayakkabı', emoji: '🏃' },
+    { name: 'Jimnastik', equipment: 'Jimnastik Aletleri', emoji: '🤸' },
+    { name: 'Boks', equipment: 'Eldiven', emoji: '🥊' },
+    { name: 'Kayak', equipment: 'Kayak Takımı', emoji: '⛷️' }
+];
+
+// Duygular
+const emotionsData = [
+    { name: 'Mutlu', expression: 'Gülümseme', emoji: '😊' },
+    { name: 'Üzgün', expression: 'Ağlama', emoji: '😢' },
+    { name: 'Kızgın', expression: 'Kaş çatma', emoji: '😠' },
+    { name: 'Korkmuş', expression: 'Korku', emoji: '😨' },
+    { name: 'Şaşkın', expression: 'Ağız açık', emoji: '😲' },
+    { name: 'Uykulu', expression: 'Esneme', emoji: '😴' },
+    { name: 'Hasta', expression: 'Hasta yüz', emoji: '🤒' },
+    { name: 'Şüpheli', expression: 'Şüphe', emoji: '🤨' },
+    { name: 'Sevimli', expression: 'Kalpli gözler', emoji: '🥰' },
+    { name: 'Gururlu', expression: 'Gurur', emoji: '😌' }
+];
+
+// Giysiler
+const clothingData = [
+    { name: 'Tişört', bodyPart: 'Gövde', emoji: '👕' },
+    { name: 'Pantolon', bodyPart: 'Bacaklar', emoji: '👖' },
+    { name: 'Elbise', bodyPart: 'Gövde ve Bacaklar', emoji: '👗' },
+    { name: 'Ayakkabı', bodyPart: 'Ayaklar', emoji: '👟' },
+    { name: 'Şapka', bodyPart: 'Baş', emoji: '🧢' },
+    { name: 'Ceket', bodyPart: 'Gövde', emoji: '🧥' },
+    { name: 'Çorap', bodyPart: 'Ayaklar', emoji: '🧦' },
+    { name: 'Eldiven', bodyPart: 'Eller', emoji: '🧤' },
+    { name: 'Atkı', bodyPart: 'Boyun', emoji: '🧣' },
+    { name: 'Gözlük', bodyPart: 'Gözler', emoji: '👓' }
+];
+
+// Ev eşyaları
+const houseItemsData = [
+    { name: 'Masa', room: 'Mutfak/Oturma Odası', emoji: '🪑' },
+    { name: 'Sandalye', room: 'Her Oda', emoji: '💺' },
+    { name: 'Yatak', room: 'Yatak Odası', emoji: '🛏️' },
+    { name: 'Dolap', room: 'Her Oda', emoji: '🗄️' },
+    { name: 'Buzdolabı', room: 'Mutfak', emoji: '🧊' },
+    { name: 'Fırın', room: 'Mutfak', emoji: '🔥' },
+    { name: 'Televizyon', room: 'Oturma Odası', emoji: '📺' },
+    { name: 'Süpürge', room: 'Tüm Ev', emoji: '🧹' },
+    { name: 'Lamba', room: 'Her Oda', emoji: '💡' },
+    { name: 'Halı', room: 'Oturma Odası', emoji: '🧶' }
+];
+
+// Güneş Sistemi
+const solarSystemData = [
+    { name: 'Güneş', type: 'Yıldız', emoji: '☀️' },
+    { name: 'Merkür', type: 'Gezegen', emoji: '🪐' },
+    { name: 'Venüs', type: 'Gezegen', emoji: '♀️' },
+    { name: 'Dünya', type: 'Gezegen', emoji: '🌎' },
+    { name: 'Mars', type: 'Gezegen', emoji: '♂️' },
+    { name: 'Jüpiter', type: 'Gezegen', emoji: '♃' },
+    { name: 'Satürn', type: 'Gezegen', emoji: '🪐' },
+    { name: 'Uranüs', type: 'Gezegen', emoji: '♅' },
+    { name: 'Neptün', type: 'Gezegen', emoji: '♆' },
+    { name: 'Ay', type: 'Uydu', emoji: '🌙' }
+];
+
+// Hikayeler
+const storiesData = [
+    {
+        title: 'Küçük Çiftçi',
+        sentences: [
+            'Bir zamanlar küçük bir çiftçi varmış.',
+            'Her sabah erkenden kalkar, hayvanlarına yem verirmiş.',
+            'Küçük çiftçinin bir ineği, iki koyunu ve bir horozu varmış.',
+            'Bir gün ineği hastalanmış.',
+            'Küçük çiftçi hemen veteriner çağırmış.',
+            'Veteriner ineği iyileştirmiş.',
+            'Çiftçi çok mutlu olmuş.',
+            'Hayvanlar da çok sevinmiş.',
+            'Birlikte güzel bir gün geçirmişler.',
+            'Küçük çiftçi o günü hiç unutmamış.'
+        ],
+        duration: 120
+    },
+    {
+        title: 'Kayıp Top',
+        sentences: [
+            'Ali\'nin kırmızı bir topu varmış.',
+            'Bir gün topu kaybolmuş.',
+            'Ali çok üzülmüş.',
+            'Bütün bahçeyi aramış.',
+            'Sonunda topu ağacın arkasında bulmuş.',
+            'Top biraz kirliymiş.',
+            'Ali topunu yıkamış.',
+            'Top eski haline dönmüş.',
+            'Ali tekrar oynamaya başlamış.',
+            'O günden sonra topuna daha iyi bakmış.'
+        ],
+        duration: 100
+    },
+    {
+        title: 'Renklerin Dansı',
+        sentences: [
+            'Renkler bir gün dans etmeye karar vermiş.',
+            'Kırmızı dans etmeye başlamış.',
+            'Sonra mavi ona katılmış.',
+            'Sarı da gelmiş.',
+            'Yeşil, turuncu, mor...',
+            'Hepsi birlikte dans etmiş.',
+            'Çok güzel bir gökkuşağı oluşmuş.',
+            'Hayvanlar hayran kalmış.',
+            'Çocuklar alkışlamış.',
+            'Renklerin dansı hiç bitmemiş.'
+        ],
+        duration: 90
+    }
+];
+
+// Oyunlar
+const gamesData = [
+    { name: 'Hafıza Oyunu', description: 'Kartları eşleştir', type: 'memory' },
+    { name: 'Matematik Oyunu', description: 'Toplama ve çıkarma', type: 'math' },
+    { name: 'Balon Patlatma', description: 'Balonları patlat', type: 'balloon' },
+    { name: 'XOX Oyunu', description: 'Üç taş', type: 'xox' },
+    { name: 'Cümle Tamamlama', description: 'Eksik kelimeyi bul', type: 'sentence' },
+    { name: 'Şekil Eşleştirme', description: 'Şekilleri eşleştir', type: 'shape' },
+    { name: 'Renk Bulmaca', description: 'Renkleri tanı', type: 'color' },
+    { name: 'Ses Oyunu', description: 'Hayvan seslerini tanı', type: 'sound' },
+    { name: 'Puzzle', description: 'Parçaları birleştir', type: 'puzzle' },
+    { name: 'Labirent', description: 'Çıkışı bul', type: 'maze' }
+];
+
+// Rozetler
+const badgesData = [
+    { id: 1, name: 'Harfler Ustası', icon: '🅰️', requirement: '10 harf öğren' },
+    { id: 2, name: 'Sayılar Ustası', icon: '🔢', requirement: '10 sayı öğren' },
+    { id: 3, name: 'Renkler Ustası', icon: '🌈', requirement: '8 renk öğren' },
+    { id: 4, name: 'Hayvan Dostu', icon: '🐾', requirement: '12 hayvan öğren' },
+    { id: 5, name: 'Matematik Dehası', icon: '➕', requirement: '20 matematik sorusu çöz' },
+    { id: 6, name: 'Hikaye Sever', icon: '📚', requirement: '3 hikaye dinle' },
+    { id: 7, name: 'Çizim Ustası', icon: '🎨', requirement: '5 çizim kaydet' },
+    { id: 8, name: 'Müzik Virtüözü', icon: '🎵', requirement: '10 nota çal' },
+    { id: 9, name: 'Oyun Şampiyonu', icon: '🏆', requirement: 'Tüm oyunları oyna' },
+    { id: 10, name: 'Öğrenme Şampiyonu', icon: '🌟', requirement: 'Tüm rozetleri kazan' }
+];
+
+// Günlük rutin
+const routineData = [
+    { time: '08:00', activity: 'Uyanma ve Kahvaltı', emoji: '🌅', completed: false },
+    { time: '09:00', activity: 'Oyun Zamanı', emoji: '🧸', completed: false },
+    { time: '10:00', activity: 'Öğrenme Zamanı', emoji: '📖', completed: false },
+    { time: '12:00', activity: 'Öğle Yemeği', emoji: '🍽️', completed: false },
+    { time: '13:00', activity: 'Dinlenme', emoji: '😴', completed: false },
+    { time: '14:00', activity: 'Açık Hava Oyunu', emoji: '⚽', completed: false },
+    { time: '16:00', activity: 'Atıştırmalık', emoji: '🍎', completed: false },
+    { time: '17:00', activity: 'Sanat Etkinliği', emoji: '🎨', completed: false },
+    { time: '19:00', activity: 'Akşam Yemeği', emoji: '🍲', completed: false },
+    { time: '20:00', activity: 'Aile Zamanı', emoji: '👨‍👩‍👧‍👦', completed: false },
+    { time: '21:00', activity: 'Uyku Zamanı', emoji: '🌙', completed: false }
+];
+
+// Ses efektleri (Web Audio API ile)
+const sounds = {
+    correct: () => playTone(523.25, 0.3, 'sine'),  // C5
+    wrong: () => playTone(349.23, 0.5, 'sawtooth'), // F4
+    click: () => playTone(261.63, 0.1, 'square'),   // C4
+    win: () => {
+        playTone(523.25, 0.2, 'sine');
+        setTimeout(() => playTone(659.25, 0.2, 'sine'), 200);
+        setTimeout(() => playTone(783.99, 0.3, 'sine'), 400);
+    },
+    balloonPop: () => playTone(100, 0.1, 'sawtooth')
+};
+
+// ===== TEMEL FONKSİYONLAR =====
+function playTone(frequency, duration, type) {
+    if (!isSoundOn) return;
+    
+    try {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        oscillator.frequency.value = frequency;
+        oscillator.type = type;
+        
+        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+        
+        oscillator.start();
+        oscillator.stop(audioContext.currentTime + duration);
+    } catch (e) {
+        console.log('Ses çalınamadı:', e);
+    }
+}
+
+function speak(text) {
+    if (!isVoiceOn || !('speechSynthesis' in window)) return;
+    
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'tr-TR';
+    utterance.rate = 0.8;
+    utterance.pitch = 1.2;
+    speechSynthesis.speak(utterance);
+}
+
+function showNotification(message, type = 'info') {
+    const notification = document.getElementById('notification');
+    if (!notification) return;
+    
+    notification.textContent = message;
+    notification.style.display = 'block';
+    notification.style.background = type === 'success' ? '#4CAF50' : 
+                                   type === 'error' ? '#F44336' : 
+                                   type === 'warning' ? '#FF9800' : '#2196F3';
+    
+    setTimeout(() => {
+        notification.style.display = 'none';
+    }, 3000);
+}
+
+function saveProgress() {
+    const progress = {
+        achievements: achievements,
+        gameScores: gameScores,
+        virtualPet: virtualPet,
+        lastVisit: new Date().toISOString(),
+        totalPlayTime: (localStorage.getItem('totalPlayTime') || 0)
+    };
+    localStorage.setItem('meteEgiticiProgress', JSON.stringify(progress));
+}
+
+function loadProgress() {
+    try {
+        const saved = localStorage.getItem('meteEgiticiProgress');
+        if (saved) {
+            const progress = JSON.parse(saved);
+            achievements = progress.achievements || [];
+            gameScores = progress.gameScores || {};
+            virtualPet = progress.virtualPet || virtualPet;
+        }
+    } catch (e) {
+        console.log('İlerleme yüklenemedi:', e);
+    }
+}
+
+function toggleMenu() {
+    const menu = document.getElementById('sidebar');
+    const btn = document.querySelector('.menu-btn');
+    if (menu.classList.contains('active')) {
+        menu.classList.remove('active');
+        btn.classList.remove('open');
+    } else {
+        menu.classList.add('active');
+        btn.classList.add('open');
+    }
+}
+
+function closeGameArea() {
+    document.getElementById('game-area').style.display = 'none';
+    document.getElementById('main-container').style.display = 'block';
+}
+
+function showSection(section) {
+    currentSection = section;
+    const gameArea = document.getElementById('game-area');
+    const mainContainer = document.getElementById('main-container');
+    const content = document.getElementById('dynamic-content');
+    
+    if (!gameArea || !content) return;
+    
+    // Menüyü kapat
+    const menu = document.getElementById('sidebar');
+    if (menu.classList.contains('active')) {
+        menu.classList.remove('active');
+        document.querySelector('.menu-btn').classList.remove('open');
+    }
+    
+    // Ana ekranı gizle, oyun alanını göster
+    mainContainer.style.display = 'none';
+    gameArea.style.display = 'flex';
+    
+    // İçeriği yükle
+    let html = '';
+    
+    switch(section) {
+        case 'home':
+            renderHome();
+            break;
+        case 'letters':
+            renderLetters();
+            break;
+        case 'numbers':
+            renderNumbers();
+            break;
+        case 'colors':
+            renderColors();
+            break;
+        case 'shapes':
+            renderShapes();
+            break;
+        case 'animals':
+            renderAnimals();
+            break;
+        case 'fruits':
+            renderFruits();
+            break;
+        case 'vegetables':
+            renderVegetables();
+            break;
+        case 'body':
+            renderBody();
+            break;
+        case 'family':
+            renderFamily();
+            break;
+        case 'house':
+            renderHouse();
+            break;
+        case 'transport':
+            renderTransport();
+            break;
+        case 'professions':
+            renderProfessions();
+            break;
+        case 'seasons':
+            renderSeasons();
+            break;
+        case 'weather':
+            renderWeather();
+            break;
+        case 'days':
+            renderDays();
+            break;
+        case 'months':
+            renderMonths();
+            break;
+        case 'clock':
+            renderClock();
+            break;
+        case 'solar-system':
+            renderSolarSystem();
+            break;
+        case 'countries':
+            renderCountries();
+            break;
+        case 'music':
+            renderMusic();
+            break;
+        case 'sports':
+            renderSports();
+            break;
+        case 'emotions':
+            renderEmotions();
+            break;
+        case 'clothing':
+            renderClothing();
+            break;
+        case 'piano':
+            renderPiano();
+            break;
+        case 'drawing':
+            renderDrawing();
+            break;
+        case 'stories':
+            renderStories();
+            break;
+        case 'games':
+            renderGames();
+            break;
+        case 'pet':
+            renderPet();
+            break;
+        case 'routine':
+            renderRoutine();
+            break;
+        case 'badges':
+            renderBadges();
+            break;
+        default:
+            renderHome();
+    }
+    
+    content.innerHTML = html;
+    sounds.click();
+}
+
+// ===== RENDER FONKSİYONLARI =====
+function renderHome() {
+    const html = `
+        <h2>🏠 Mete'nin Eğitici Dünyası</h2>
+        <p style="font-size:1.2em; margin:20px 0;">Hoş geldin Mete! Bugün ne öğrenmek istersin?</p>
+        
+        <div class="stats" style="background:white; padding:15px; border-radius:15px; margin:20px auto; max-width:500px;">
+            <h3>📊 İstatistiklerin</h3>
+            <p>🎖️ Rozetler: ${achievements.length}/10</p>
+            <p>⭐ Toplam Puan: ${Object.values(gameScores).reduce((a,b) => a + b, 0)}</p>
+            <p>🐶 Hayvanın: ${virtualPet.name}</p>
+        </div>
+        
+        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:15px; margin:30px 0;">
+            <button class="nav-btn" onclick="showSection('letters')">🅰️ Harfler</button>
+            <button class="nav-btn" onclick="showSection('numbers')">🔢 Sayılar</button>
+            <button class="nav-btn" onclick="showSection('games')">🎮 Oyunlar</button>
+            <button class="nav-btn" onclick="showSection('stories')">📚 Masallar</button>
+            <button class="nav-btn" onclick="showSection('drawing')">🎨 Çizim</button>
+            <button class="nav-btn" onclick="showSection('pet')">🐶 Hayvanım</button>
+        </div>
+        
+        <div style="background:#e3f2fd; padding:20px; border-radius:15px; margin-top:20px;">
+            <h3>🌟 Bugünün Hedefi</h3>
+            <p>Bugün 5 yeni kelime öğrenmeye ne dersin?</p>
+            <button class="nav-btn" onclick="startDailyChallenge()">Başla</button>
+        </div>
+    `;
+    document.getElementById('dynamic-content').innerHTML = html;
+    updateMascotText('Bugün hangi maceraya atılalım? Seçim senin! 🚀');
+}
+
+function renderLetters() {
+    const currentLetterIndex = gameScores.letterIndex || 0;
+    const currentLetter = alphabetData[currentLetterIndex];
+    
+    const html = `
+        <h2>🅰️ Harfleri Öğren</h2>
+        <p>Harfleri tanıyalım ve okumayı öğrenelim!</p>
+        
+        <div class="letter-display">${currentLetter.letter}</div>
+        
+        <div style="background:white; padding:20px; border-radius:15px; margin:20px auto; max-width:400px;">
+            <div style="font-size:4em; margin:10px;">${currentLetter.emoji}</div>
+            <h3>${currentLetter.word}</h3>
+            <p>"${currentLetter.word}" kelimesi <strong>${currentLetter.letter}</strong> harfi ile başlıyor!</p>
+        </div>
+        
+        <div style="display:flex; justify-content:center; gap:10px; margin:20px;">
+            <button class="nav-btn" onclick="prevLetter()">◀️ Önceki</button>
+            <button class="nav-btn" onclick="speakLetter()">🔊 Dinle</button>
+            <button class="nav-btn" onclick="nextLetter()">Sonraki ▶️</button>
+        </div>
+        
+        <div class="alphabet-container">
+            ${alphabetData.map((letter, index) => `
+                <div class="alphabet-card ${index === currentLetterIndex ? 'active' : ''}" 
+                     onclick="selectLetter(${index})"
+                     style="${index === currentLetterIndex ? 'background:var(--primary-color); transform:scale(1.1);' : ''}">
+                    ${letter.letter}
+                </div>
+            `).join('')}
+        </div>
+        
+        <div style="margin-top:30px;">
+            <h3>Harflerle Kelime Oyunu</h3>
+            <button class="nav-btn" onclick="startWordGame()">🎮 Oyunu Başlat</button>
+        </div>
+    `;
+    document.getElementById('dynamic-content').innerHTML = html;
+    updateMascotText(`Harika! Şimdi "${currentLetter.letter}" harfini öğreniyoruz. ${currentLetter.word} kelimesi bu harfle başlıyor!`);
+}
+
+function renderNumbers() {
+    const currentNumberIndex = gameScores.numberIndex || 0;
+    const currentNumber = numbersData[currentNumberIndex];
+    
+    const html = `
+        <h2>🔢 Sayıları Öğren</h2>
+        <p>Sayıları sayalım ve matematik öğrenelim!</p>
+        
+        <div class="letter-display">${currentNumber.number}</div>
+        
+        <div style="background:white; padding:20px; border-radius:15px; margin:20px auto; max-width:400px;">
+            <div style="font-size:2em; margin:10px;">${currentNumber.emoji}</div>
+            <h3>${currentNumber.word} (${currentNumber.number})</h3>
+            <p>Resimdeki ${currentNumber.number} tane nesneyi sayabilir misin?</p>
+        </div>
+        
+        <div style="display:flex; justify-content:center; gap:10px; margin:20px;">
+            <button class="nav-btn" onclick="prevNumber()">◀️ Önceki</button>
+            <button class="nav-btn" onclick="speakNumber()">🔊 Sayıyı Dinle</button>
+            <button class="nav-btn" onclick="nextNumber()">Sonraki ▶️</button>
+        </div>
+        
+        <div class="number-line">
+            ${numbersData.map((num, index) => `
+                <div class="number-point ${index === currentNumberIndex ? 'active' : ''}" 
+                     onclick="selectNumber(${index})"
+                     style="${index === currentNumberIndex ? 'background:var(--primary-color); transform:scale(1.2);' : ''}">
+                    ${num.number}
+                </div>
+            `).join('')}
+        </div>
+        
+        <div style="margin-top:30px;">
+            <h3>Sayı Sayma Oyunu</h3>
+            <button class="nav-btn" onclick="startCountingGame()">🎮 Saymaya Başla</button>
+        </div>
+    `;
+    document.getElementById('dynamic-content').innerHTML = html;
+    updateMascotText(`Harika! Şimdi ${currentNumber.word} sayısını öğreniyoruz. ${currentNumber.emoji} işaretini sayabilir misin?`);
+}
+
+function renderColors() {
+    const html = `
+        <h2>🌈 Renkleri Öğren</h2>
+        <p>Renkleri tanıyalım ve eşleştirelim!</p>
+        
+        <div class="color-grid">
+            ${colorsData.map((color, index) => `
+                <div class="color-item" 
+                     style="background-color:${color.value};"
+                     onclick="showColorInfo(${index})">
+                    ${color.emoji}<br>
+                    <span style="color:${color.value === '#FFFFFF' ? 'black' : 'white'}">${color.name}</span>
+                </div>
+            `).join('')}
+        </div>
+        
+        <div style="margin-top:30px;">
+            <h3>Renk Eşleştirme Oyunu</h3>
+            <button class="nav-btn" onclick="startColorMatchingGame()">🎮 Oyunu Başlat</button>
+        </div>
+    `;
+    document.getElementById('dynamic-content').innerHTML = html;
+    updateMascotText('Renkler dünyasına hoş geldin! Hangi rengi öğrenmek istersin?');
+}
+
+function renderShapes() {
+    const html = `
+        <h2>🔶 Şekilleri Öğren</h2>
+        <p>Geometrik şekilleri tanıyalım!</p>
+        
+        <div class="shape-container">
+            ${shapesData.map((shape, index) => `
+                <div class="shape-item" onclick="showShapeInfo(${index})">
+                    <div class="shape ${shape.name.toLowerCase()}"></div>
+                    <div class="shape-title">${shape.name}</div>
+                </div>
+            `).join('')}
+        </div>
+        
+        <div style="margin-top:30px;">
+            <h3>Şekil Bulmaca Oyunu</h3>
+            <button class="nav-btn" onclick="startShapePuzzle()">🎮 Oyunu Başlat</button>
+        </div>
+    `;
+    document.getElementById('dynamic-content').innerHTML = html;
+    updateMascotText('Şekiller ne kadar eğlenceli! Hangi şekli en çok seviyorsun?');
+}
+
+function renderAnimals() {
+    const html = `
+        <h2>🐾 Hayvanları Öğren</h2>
+        <p>Hayvanları tanıyalım ve seslerini öğrenelim!</p>
+        
+        <div class="grid-container">
+            ${animalsData.map((animal, index) => `
+                <div class="grid-card" onclick="playAnimalSound(${index})">
+                    <div class="grid-icon">${animal.emoji}</div>
+                    <div class="grid-title">${animal.name}</div>
+                </div>
+            `).join('')}
+        </div>
+        
+        <div style="margin-top:30px;">
+            <h3>Hayvan Sesleri Oyunu</h3>
+            <button class="nav-btn" onclick="startAnimalSoundGame()">🔊 Oyunu Başlat</button>
+        </div>
+    `;
+    document.getElementById('dynamic-content').innerHTML = html;
+    updateMascotText('Hayvanlar ne kadar sevimli! Hangi hayvanın sesini taklit edebilirsin?');
+}
+
+function renderFruits() {
+    const html = `
+        <h2>🍎 Meyveleri Öğren</h2>
+        <p>Sağlıklı meyveleri tanıyalım!</p>
+        
+        <div class="grid-container">
+            ${fruitsData.map((fruit, index) => `
+                <div class="grid-card" onclick="showFruitInfo(${index})">
+                    <div class="grid-icon">${fruit.emoji}</div>
+                    <div class="grid-title">${fruit.name}</div>
+                </div>
+            `).join('')}
+        </div>
+        
+        <div style="margin-top:30px;">
+            <h3>Meyve Sepeti Oyunu</h3>
+            <button class="nav-btn" onclick="startFruitBasketGame()">🎮 Oyunu Başlat</button>
+        </div>
+    `;
+    document.getElementById('dynamic-content').innerHTML = html;
+    updateMascotText('Meyveler vitamin deposu! Hangi meyveyi en çok seviyorsun?');
+}
+
+function renderVegetables() {
+    const html = `
+        <h2>🥦 Sebzeleri Öğren</h2>
+        <p>Sağlıklı sebzeleri tanıyalım!</p>
+        
+        <div class="vegetable-grid">
+            ${vegetablesData.map((veg, index) => `
+                <div class="vegetable-card" onclick="showVegetableInfo(${index})">
+                    <div class="vegetable-icon">${veg.emoji}</div>
+                    <div class="grid-title">${veg.name}</div>
+                </div>
+            `).join('')}
+        </div>
+        
+        <div style="margin-top:30px;">
+            <h3>Sebze Bahçesi Oyunu</h3>
+            <button class="nav-btn" onclick="startVegetableGardenGame()">🎮 Oyunu Başlat</button>
+        </div>
+    `;
+    document.getElementById('dynamic-content').innerHTML = html;
+    updateMascotText('Sebzeler güç kaynağı! Hangi sebzeyi yemeyi seviyorsun?');
+}
+
+function renderBody() {
+    const html = `
+        <h2>👤 Vücudumuzu Tanıyalım</h2>
+        <p>Vücudumuzun bölümlerini öğrenelim!</p>
+        
+        <div class="grid-container">
+            ${bodyPartsData.map((part, index) => `
+                <div class="grid-card" onclick="showBodyPartInfo(${index})">
+                    <div class="grid-icon">${part.emoji}</div>
+                    <div class="grid-title">${part.name}</div>
+                </div>
+            `).join('')}
+        </div>
+        
+        <div style="margin-top:30px;">
+            <h3>Vücut Parçaları Oyunu</h3>
+            <button class="nav-btn" onclick="startBodyPartsGame()">🎮 Oyunu Başlat</button>
+        </div>
+    `;
+    document.getElementById('dynamic-content').innerHTML = html;
+    updateMascotText('Vücudumuz harika bir makine! Hangi bölümünü en çok kullanıyorsun?');
+}
+
+function renderFamily() {
+    const html = `
+        <h2>👨‍👩‍👧‍👦 Ailemizi Tanıyalım</h2>
+        <p>Aile üyelerimizi öğrenelim!</p>
+        
+        <div class="family-container">
+            ${familyData.map((member, index) => `
+                <div class="family-card" onclick="showFamilyInfo(${index})">
+                    <div class="family-icon">${member.role}</div>
+                    <div style="font-weight:bold; margin-top:5px;">${member.name}</div>
+                </div>
+            `).join('')}
+        </div>
+        
+        <div style="margin-top:30px;">
+            <h3>Aile Ağacı Oyunu</h3>
+            <button class="nav-btn" onclick="startFamilyTreeGame()">🎮 Oyunu Başlat</button>
+        </div>
+    `;
+    document.getElementById('dynamic-content').innerHTML = html;
+    updateMascotText('Aile çok önemli! Senin ailen kaç kişi?');
+}
+
+function renderHouse() {
+    const html = `
+        <h2>🏠 Evimizi Tanıyalım</h2>
+        <p>Evimizdeki eşyaları öğrenelim!</p>
+        
+        <div class="grid-container">
+            ${houseItemsData.map((item, index) => `
+                <div class="grid-card" onclick="showHouseItemInfo(${index})">
+                    <div class="grid-icon">${item.emoji}</div>
+                    <div class="grid-title">${item.name}</div>
+                </div>
+            `).join('')}
+        </div>
+        
+        <div style="margin-top:30px;">
+            <h3>Ev Eşyaları Oyunu</h3>
+            <button class="nav-btn" onclick="startHouseItemsGame()">🎮 Oyunu Başlat</button>
+        </div>
+    `;
+    document.getElementById('dynamic-content').innerHTML = html;
+    updateMascotText('Evimiz sıcak yuvamız! En sevdiğin oyuncağın hangisi?');
+}
+
+function renderTransport() {
+    const html = `
+        <h2>🚗 Taşıtları Tanıyalım</h2>
+        <p>Ulaşım araçlarını öğrenelim!</p>
+        
+        <div class="grid-container">
+            ${transportData.map((vehicle, index) => `
+                <div class="grid-card" onclick="showTransportInfo(${index})">
+                    <div class="grid-icon">${vehicle.emoji}</div>
+                    <div class="grid-title">${vehicle.name}</div>
+                </div>
+            `).join('')}
+        </div>
+        
+        <div style="margin-top:30px;">
+            <h3>Taşıt Eşleştirme Oyunu</h3>
+            <button class="nav-btn" onclick="startTransportGame()">🎮 Oyunu Başlat</button>
+        </div>
+    `;
+    document.getElementById('dynamic-content').innerHTML = html;
+    updateMascotText('Taşıtlar bizi bir yerden bir yere götürür! En sevdiğin taşıt hangisi?');
+}
+
+function renderProfessions() {
+    const html = `
+        <h2>👨‍⚕️ Meslekleri Tanıyalım</h2>
+        <p>Farklı meslekleri öğrenelim!</p>
+        
+        <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:15px; max-width:500px; margin:0 auto;">
+            ${professionsData.map((profession, index) => `
+                <div class="profession-card" onclick="showProfessionInfo(${index})">
+                    <div class="profession-img">${profession.tool}</div>
+                    <div style="font-weight:bold; margin-top:10px;">${profession.name}</div>
+                </div>
+            `).join('')}
+        </div>
+        
+        <div style="margin-top:30px;">
+            <h3>Meslek Tahmin Oyunu</h3>
+            <button class="nav-btn" onclick="startProfessionGame()">🎮 Oyunu Başlat</button>
+        </div>
+    `;
+    document.getElementById('dynamic-content').innerHTML = html;
+    updateMascotText('Her meslek önemli! Büyüyünce ne olmak istiyorsun?');
+}
+
+function renderSeasons() {
+    const html = `
+        <h2>🍂 Mevsimleri Tanıyalım</h2>
+        <p>Yılın dört mevsimini öğrenelim!</p>
+        
+        <div class="season-activities">
+            ${seasonsData.map((season, index) => `
+                <div class="activity-card" onclick="showSeasonInfo(${index})">
+                    <div style="font-size:3em;">${season.emoji}</div>
+                    <div style="font-weight:bold; margin:10px 0;">${season.name}</div>
+                    <div style="font-size:0.9em; color:#666;">${season.months}</div>
+                </div>
+            `).join('')}
+        </div>
+        
+        <div style="margin-top:30px;">
+            <h3>Mevsimler Oyunu</h3>
+            <button class="nav-btn" onclick="startSeasonsGame()">🎮 Oyunu Başlat</button>
+        </div>
+    `;
+    document.getElementById('dynamic-content').innerHTML = html;
+    updateMascotText('Mevsimler yılı dört bölüme ayırır! En sevdiğin mevsim hangisi?');
+}
+
+function renderWeather() {
+    const html = `
+        <h2>☀️ Hava Durumunu Tanıyalım</h2>
+        <p>Farklı hava durumlarını öğrenelim!</p>
+        
+        <div class="weather-container">
+            ${weatherData.map((weather, index) => `
+                <div class="weather-card" onclick="showWeatherInfo(${index})">
+                    <div class="weather-icon">${weather.emoji}</div>
+                    <div style="font-weight:bold; margin-top:10px;">${weather.name}</div>
+                </div>
+            `).join('')}
+        </div>
+        
+        <div style="margin-top:30px;">
+            <h3>Hava Durumu Oyunu</h3>
+            <button class="nav-btn" onclick="startWeatherGame()">🎮 Oyunu Başlat</button>
+        </div>
+    `;
+    document.getElementById('dynamic-content').innerHTML = html;
+    updateMascotText('Hava durumu günlük planlarımızı etkiler! Bugün hava nasıl?');
+}
+
+function renderDays() {
+    const today = new Date().getDay(); // 0 = Pazar
+    const currentDay = today === 0 ? 6 : today - 1; // Pazartesi = 0
+    
+    const html = `
+        <h2>📅 Günleri Öğrenelim</h2>
+        <p>Haftanın günlerini sırasıyla öğrenelim!</p>
+        
+        <div class="months-container">
+            ${daysData.map((day, index) => `
+                <div class="month-card ${index === currentDay ? 'active' : ''}" 
+                     onclick="showDayInfo(${index})"
+                     style="${index === currentDay ? 'background:#e3f2fd; transform:scale(1.1);' : ''}">
+                    ${day.emoji} ${day.name}
+                </div>
+            `).join('')}
+        </div>
+        
+        <div style="background:#fff3e0; padding:20px; border-radius:15px; margin:20px auto; max-width:400px;">
+            <h3>📅 Bugün: ${daysData[currentDay].name}</h3>
+            <p>Bugün ${daysData[currentDay].emoji} günü! Harika bir gün geçirelim!</p>
+        </div>
+        
+        <div style="margin-top:30px;">
+            <h3>Günler Şarkısı</h3>
+            <button class="nav-btn" onclick="playDaysSong()">🎵 Şarkıyı Dinle</button>
+        </div>
+    `;
+    document.getElementById('dynamic-content').innerHTML = html;
+    updateMascotText(`Haftanın günleri yedi tanedir! Bugün ${daysData[currentDay].name}, yani ${daysData[currentDay].emoji} günü!`);
+}
+
+function renderMonths() {
+    const currentMonth = new Date().getMonth(); // 0 = Ocak
+    
+    const html = `
+        <h2>🗓️ Ayları Öğrenelim</h2>
+        <p>Yılın aylarını sırasıyla öğrenelim!</p>
+        
+        <div class="months-container">
+            ${monthsData.map((month, index) => `
+                <div class="month-card ${index === currentMonth ? 'active' : ''}" 
+                     onclick="showMonthInfo(${index})"
+                     style="${index === currentMonth ? 'background:#e3f2fd; transform:scale(1.1);' : ''}">
+                    ${month.emoji} ${month.name}
+                </div>
+            `).join('')}
+        </div>
+        
+        <div style="background:#fff3e0; padding:20px; border-radius:15px; margin:20px auto; max-width:400px;">
+            <h3>📅 Bu Ay: ${monthsData[currentMonth].name}</h3>
+            <p>${monthsData[currentMonth].season} mevsimindeyiz! ${monthsData[currentMonth].emoji}</p>
+        </div>
+        
+        <div style="margin-top:30px;">
+            <h3>Aylar Oyunu</h3>
+            <button class="nav-btn" onclick="startMonthsGame()">🎮 Oyunu Başlat</button>
+        </div>
+    `;
+    document.getElementById('dynamic-content').innerHTML = html;
+    updateMascotText(`Yılda 12 ay vardır! Şu an ${monthsData[currentMonth].name} ayındayız. ${monthsData[currentMonth].emoji}`);
+}
+
+function renderClock() {
+    const html = `
+        <h2>⏰ Saati Öğrenelim</h2>
+        <p>Analog ve dijital saati okumayı öğrenelim!</p>
+        
+        <div class="clock-face">
+            <div class="clock-center"></div>
+            <div class="hand hour-hand" id="hour-hand"></div>
+            <div class="hand minute-hand" id="minute-hand"></div>
+            
+            <!-- Saat numaraları -->
+            ${Array.from({length: 12}, (_, i) => {
+                const angle = (i * 30) * Math.PI / 180;
+                const radius = 90;
+                const x = 125 + Math.sin(angle) * radius;
+                const y = 125 - Math.cos(angle) * radius;
+                const hour = i === 0 ? 12 : i;
+                return `<div class="clock-number" style="left:${x-15}px; top:${y-15}px;">${hour}</div>`;
+            }).join('')}
+        </div>
+        
+        <div style="font-size:4em; font-weight:bold; margin:20px;" id="digital-clock">00:00</div>
+        
+        <div style="margin:20px;">
+            <button class="nav-btn" onclick="setRandomTime()">🔄 Rastgele Saat</button>
+            <button class="nav-btn" onclick="setCurrentTime()">⏱️ Şimdiki Zaman</button>
+        </div>
+        
+        <div style="background:#e3f2fd; padding:20px; border-radius:15px; margin:20px auto; max-width:500px;">
+            <h3>Saat Okuma Pratiği</h3>
+            <p>Akrep kısa saati, yelkovan uzun dakikayı gösterir!</p>
+            <button class="nav-btn" onclick="startClockQuiz()">🎮 Saat Oyunu</button>
+        </div>
+    `;
+    document.getElementById('dynamic-content').innerHTML = html;
+    updateMascotText('Saati öğrenmek çok eğlenceli! Akrep ve yelkovanı takip et!');
+    setCurrentTime();
+}
+
+function renderSolarSystem() {
+    const html = `
+        <h2>🪐 Güneş Sistemini Tanıyalım</h2>
+        <p>Güneş sistemimizdeki gezegenleri öğrenelim!</p>
+        
+        <div class="solar-system">
+            ${solarSystemData.map((planet, index) => `
+                <div class="planet-card" onclick="showPlanetInfo(${index})">
+                    <div class="planet-visual" style="background:${getPlanetColor(planet.name)};"></div>
+                    <div style="font-weight:bold; margin-top:10px;">${planet.name}</div>
+                    <div style="font-size:0.9em;">${planet.type}</div>
+                </div>
+            `).join('')}
+        </div>
+        
+        <div style="margin-top:30px;">
+            <h3>Gezegenler Oyunu</h3>
+            <button class="nav-btn" onclick="startPlanetGame()">🎮 Oyunu Başlat</button>
+        </div>
+    `;
+    document.getElementById('dynamic-content').innerHTML = html;
+    updateMascotText('Uzay çok büyük ve heyecan verici! Güneş sistemimizde 8 gezegen var!');
+}
+
+function renderCountries() {
+    const html = `
+        <h2>🌍 Ülkeleri Tanıyalım</h2>
+        <p>Farklı ülkeleri ve bayraklarını öğrenelim!</p>
+        
+        <div class="countries-container">
+            ${countriesData.map((country, index) => `
+                <div class="country-card" onclick="showCountryInfo(${index})">
+                    <div class="country-flag">${country.flag}</div>
+                    <div style="font-weight:bold; margin-top:10px;">${country.name}</div>
+                    <div style="font-size:0.9em; color:#666;">${country.capital}</div>
+                </div>
+            `).join('')}
+        </div>
+        
+        <div style="margin-top:30px;">
+            <h3>Bayrak Oyunu</h3>
+            <button class="nav-btn" onclick="startFlagGame()">🎮 Oyunu Başlat</button>
+        </div>
+    `;
+    document.getElementById('dynamic-content').innerHTML = html;
+    updateMascotText('Dünyada 195 ülke var! Türkiye bizim güzel ülkemiz! 🇹🇷');
+}
+
+function renderMusic() {
+    const html = `
+        <h2>🎵 Müziği Tanıyalım</h2>
+        <p>Müzik notalarını ve enstrümanları öğrenelim!</p>
+        
+        <div class="notes-container">
+            ${musicNotesData.map((note, index) => `
+                <div class="note-card" onclick="playMusicNote(${index})">
+                    ${note.emoji}<br>
+                    <div style="font-size:0.8em; margin-top:5px;">${note.name}</div>
+                </div>
+            `).join('')}
+        </div>
+        
+        <div style="margin-top:30px;">
+            <h3>Enstrümanları Tanıyalım</h3>
+            <div style="display:flex; justify-content:center; gap:15px; flex-wrap:wrap; margin:20px;">
+                <button class="nav-btn" onclick="playInstrument('piano')">🎹 Piyano</button>
+                <button class="nav-btn" onclick="playInstrument('guitar')">🎸 Gitar</button>
+                <button class="nav-btn" onclick="playInstrument('drums')">🥁 Davul</button>
+                <button class="nav-btn" onclick="playInstrument('violin')">🎻 Keman</button>
+            </div>
+        </div>
+        
+        <div style="margin-top:30px;">
+            <h3>Ritim Oyunu</h3>
+            <button class="nav-btn" onclick="startRhythmGame()">🎮 Oyunu Başlat</button>
+        </div>
+    `;
+    document.getElementById('dynamic-content').innerHTML = html;
+    updateMascotText('Müzik ruhun gıdasıdır! Hangi enstrümanı çalmak istersin?');
+}
+
+function renderSports() {
+    const html = `
+        <h2>⚽ Sporları Tanıyalım</h2>
+        <p>Farklı spor dallarını öğrenelim!</p>
+        
+        <div class="grid-container">
+            ${sportsData.map((sport, index) => `
+                <div class="grid-card" onclick="showSportInfo(${index})">
+                    <div class="grid-icon">${sport.emoji}</div>
+                    <div class="grid-title">${sport.name}</div>
+                </div>
+            `).join('')}
+        </div>
+        
+        <div style="margin-top:30px;">
+            <h3>Spor Eşleştirme Oyunu</h3>
+            <button class="nav-btn" onclick="startSportsGame()">🎮 Oyunu Başlat</button>
+        </div>
+    `;
+    document.getElementById('dynamic-content').innerHTML = html;
+    updateMascotText('Spor yapmak sağlıklıdır! Hangi sporu yapmayı seviyorsun?');
+}
+
+function renderEmotions() {
+    const html = `
+        <h2>😊 Duyguları Tanıyalım</h2>
+        <p>Farklı duyguları ifade etmeyi öğrenelim!</p>
+        
+        <div class="grid-container">
+            ${emotionsData.map((emotion, index) => `
+                <div class="grid-card" onclick="showEmotionInfo(${index})">
+                    <div class="grid-icon">${emotion.emoji}</div>
+                    <div class="grid-title">${emotion.name}</div>
+                </div>
+            `).join('')}
+        </div>
+        
+        <div style="margin-top:30px;">
+            <h3>Duygu Tahmin Oyunu</h3>
+            <button class="nav-btn" onclick="startEmotionGame()">🎮 Oyunu Başlat</button>
+        </div>
+    `;
+    document.getElementById('dynamic-content').innerHTML = html;
+    updateMascotText('Duygularımızı ifade etmek önemlidir! Bugün nasıl hissediyorsun?');
+}
+
+function renderClothing() {
+    const html = `
+        <h2>👕 Giysileri Tanıyalım</h2>
+        <p>Farklı giysi türlerini öğrenelim!</p>
+        
+        <div class="clothing-container">
+            ${clothingData.map((item, index) => `
+                <div class="clothing-card" onclick="showClothingInfo(${index})">
+                    <div class="clothing-icon">${item.emoji}</div>
+                    <div style="font-weight:bold; margin-top:10px;">${item.name}</div>
+                </div>
+            `).join('')}
+        </div>
+        
+        <div style="margin-top:30px;">
+            <h3>Giysi Eşleştirme Oyunu</h3>
+            <button class="nav-btn" onclick="startClothingGame()">🎮 Oyunu Başlat</button>
+        </div>
+    `;
+    document.getElementById('dynamic-content').innerHTML = html;
+    updateMascotText('Giysiler bizi sıcak tutar ve güzel gösterir! En sevdiğin giysin hangisi?');
+}
+
+function renderPiano() {
+    const notes = ['Do', 'Re', 'Mi', 'Fa', 'Sol', 'La', 'Si', 'Do2'];
+    const frequencies = [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88, 523.25];
+    
+    const html = `
+        <h2>🎹 Piyano Çalalım</h2>
+        <p>Piyano tuşlarına basarak müzik yapalım!</p>
+        
+        <div class="piano">
+            ${notes.map((note, index) => `
+                <div class="key" 
+                     data-note="${note}"
+                     data-frequency="${frequencies[index]}"
+                     onmousedown="playPianoNote(${index})"
+                     ontouchstart="playPianoNote(${index}); event.preventDefault()">
+                    ${note} (${musicNotesData[index % 7]?.symbol || 'C'})
+                </div>
+            `).join('')}
+            
+            <!-- Siyah tuşlar -->
+            <div class="key black" style="margin-left:40%;" onclick="playPianoNote(8)" data-frequency="277.18">Do#</div>
+            <div class="key black" style="margin-left:40%;" onclick="playPianoNote(9)" data-frequency="311.13">Re#</div>
+            <div class="key black" style="margin-left:40%;" onclick="playPianoNote(11)" data-frequency="369.99">Fa#</div>
+            <div class="key black" style="margin-left:40%;" onclick="playPianoNote(12)" data-frequency="415.30">Sol#</div>
+            <div class="key black" style="margin-left:40%;" onclick="playPianoNote(13)" data-frequency="466.16">La#</div>
+        </div>
+        
+        <div style="margin-top:30px;">
+            <h3>🎶 Basit Melodiler</h3>
+            <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin:20px;">
+                <button class="nav-btn" onclick="playMelody('twinkle')">✨ Twinkle Twinkle</button>
+                <button class="nav-btn" onclick="playMelody('happy')">🎉 Happy Birthday</button>
+                <button class="nav-btn" onclick="playMelody('mary')">🐑 Mary Had a Little Lamb</button>
+            </div>
+        </div>
+        
+        <div style="background:#e3f2fd; padding:20px; border-radius:15px; margin:20px auto; max-width:500px;">
+            <h3>Piyano Öğreniyorum</h3>
+            <p>Her tuş farklı bir nota sesi çıkarır. Denemeye başla!</p>
+        </div>
+    `;
+    document.getElementById('dynamic-content').innerHTML = html;
+    updateMascotText('Piyano çalmak çok eğlenceli! Hangi melodiyi çalmak istersin?');
+}
+
+function renderDrawing() {
+    // Çizim alanını göster
+    document.getElementById('drawing-area').style.display = 'flex';
+    document.getElementById('game-area').style.display = 'none';
+    document.getElementById('main-container').style.display = 'none';
+    
+    // Canvas'ı başlat
+    setTimeout(() => {
+        initCanvas();
+    }, 100);
+}
+
+function renderStories() {
+    const html = `
+        <h2>📚 Masallar Dünyası</h2>
+        <p>Eğitici ve eğlenceli masallar dinleyelim!</p>
+        
+        <div style="max-width:600px; margin:0 auto;">
+            ${storiesData.map((story, index) => `
+                <div class="story-card" onclick="startStory(${index})">
+                    <div class="story-icon">📖</div>
+                    <div>
+                        <div style="font-weight:bold; font-size:1.2em;">${story.title}</div>
+                        <div style="color:#666; margin-top:5px;">${story.sentences.length} cümle • ${story.duration} saniye</div>
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+        
+        <div style="margin-top:30px;">
+            <h3>🎧 Sesli Hikayeler</h3>
+            <p>Hikayeleri dinleyerek Türkçe'ni geliştirebilirsin!</p>
+        </div>
+    `;
+    document.getElementById('dynamic-content').innerHTML = html;
+    updateMascotText('Masallar hayal gücümüzü geliştirir! Hangi masalı dinlemek istersin?');
+}
+
+function renderGames() {
+    const html = `
+        <h2>🎮 Oyun Zamanı!</h2>
+        <p>Eğlenerek öğrenmek için oyunlar oynayalım!</p>
+        
+        <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:15px; max-width:600px; margin:30px auto;">
+            ${gamesData.map((game, index) => `
+                <div class="category-card" onclick="startGame('${game.type}')">
+                    <div class="category-icon">${getGameIcon(game.type)}</div>
+                    <div class="category-title">${game.name}</div>
+                    <div style="font-size:0.8em; color:#666; margin-top:5px;">${game.description}</div>
+                </div>
+            `).join('')}
+        </div>
+        
+        <div style="background:#fff3e0; padding:20px; border-radius:15px; margin:20px auto; max-width:500px;">
+            <h3>🏆 Oyun İstatistiklerin</h3>
+            <p>Toplam Oyun: ${Object.keys(gameScores).length}</p>
+            <p>Toplam Puan: ${Object.values(gameScores).reduce((a,b) => a + b, 0)}</p>
+            <button class="nav-btn" onclick="resetGameScores()">🔄 Skorları Sıfırla</button>
+        </div>
+    `;
+    document.getElementById('dynamic-content').innerHTML = html;
+    updateMascotText('Oyunlar en iyi öğrenme yöntemidir! Hangi oyunu oynamak istersin?');
+}
+
+function renderPet() {
+    const hungerWidth = virtualPet.hunger;
+    const happinessWidth = virtualPet.happiness;
+    const energyWidth = virtualPet.energy;
+    
+    const html = `
+        <h2>🐶 Sanal Hayvanım: ${virtualPet.name}</h2>
+        <p>Hayvanına bak, besle ve onunla oyna!</p>
+        
+        <div class="pet-container">
+            <div class="pet-avatar">${virtualPet.type}</div>
+            
+            <div style="background:white; padding:15px; border-radius:15px; margin:20px auto; max-width:400px;">
+                <h3>${virtualPet.name} Seviye: ${virtualPet.level}</h3>
+                <div class="pet-stats">
+                    <div class="stat-box">
+                        Açlık: ${virtualPet.hunger}%
+                        <div class="stat-value">
+                            <div class="stat-fill" style="width:${hungerWidth}%"></div>
+                        </div>
+                    </div>
+                    <div class="stat-box">
+                        Mutluluk: ${virtualPet.happiness}%
+                        <div class="stat-value">
+                            <div class="stat-fill" style="width:${happinessWidth}%"></div>
+                        </div>
+                    </div>
+                    <div class="stat-box">
+                        Enerji: ${virtualPet.energy}%
+                        <div class="stat-value">
+                            <div class="stat-fill" style="width:${energyWidth}%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="pet-actions">
+                <button class="pet-btn" onclick="feedPet()">
+                    <span>🍎</span>
+                    <div>Besle</div>
+                </button>
+                <button class="pet-btn" onclick="playWithPet()">
+                    <span>🎾</span>
+                    <div>Oyna</div>
+                </button>
+                <button class="pet-btn" onclick="restPet()">
+                    <span>😴</span>
+                    <div>Uyut</div>
+                </button>
+                <button class="pet-btn" onclick="cleanPet()">
+                    <span>🚿</span>
+                    <div>Temizle</div>
+                </button>
+            </div>
+            
+            <div style="margin-top:20px;">
+                <button class="nav-btn" onclick="renamePet()">✏️ İsim Değiştir</button>
+                <button class="nav-btn" onclick="changePetType()">🔄 Hayvan Değiştir</button>
+            </div>
+        </div>
+        
+        <div style="margin-top:30px;">
+            <h3>🐾 Hayvan Bakımı İpuçları</h3>
+            <p>Tüm ihtiyaçlarını karşıladığın zaman ${virtualPet.name} mutlu olacak!</p>
+        </div>
+    `;
+    document.getElementById('dynamic-content').innerHTML = html;
+    updateMascotText(`${virtualPet.name} çok sevimli görünüyor! Onunla ilgilenmeyi unutma!`);
+}
+
+function renderRoutine() {
+    const now = new Date();
+    const currentTime = now.getHours() * 60 + now.getMinutes();
+    let nextActivityIndex = -1;
+    
+    // Sonraki aktiviteyi bul
+    for (let i = 0; i < routineData.length; i++) {
+        const [hours, minutes] = routineData[i].time.split(':').map(Number);
+        const activityTime = hours * 60 + minutes;
+        if (activityTime > currentTime) {
+            nextActivityIndex = i;
+            break;
+        }
+    }
+    
+    if (nextActivityIndex === -1) nextActivityIndex = 0;
+    
+    const html = `
+        <h2>📅 Günlük Rutinim</h2>
+        <p>Planlı bir gün geçirmek için rutinini takip et!</p>
+        
+        <div class="routine-list">
+            ${routineData.map((activity, index) => `
+                <div class="routine-item ${activity.completed ? 'completed' : ''} ${index === nextActivityIndex ? 'next-activity' : ''}"
+                     onclick="toggleRoutine(${index})">
+                    <div class="routine-checkbox"></div>
+                    <div>
+                        <div style="font-weight:bold;">${activity.time} - ${activity.activity}</div>
+                        <div style="display:flex; align-items:center; gap:10px; margin-top:5px;">
+                            <span style="font-size:1.5em;">${activity.emoji}</span>
+                            <span style="color:#666;">${index === nextActivityIndex ? '⏰ Şimdi sırası bu!' : ''}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+        
+        <div style="margin-top:30px;">
+            <button class="nav-btn" onclick="completeAllRoutines()">✅ Tümünü Tamamla</button>
+            <button class="nav-btn" onclick="resetRoutines()">🔄 Rutini Sıfırla</button>
+        </div>
+        
+        <div style="background:#e3f2fd; padding:20px; border-radius:15px; margin:20px auto; max-width:500px;">
+            <h3>⏰ Şuanki Zaman: ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}</h3>
+            <p>Sonraki aktivite: ${routineData[nextActivityIndex]?.activity || 'Gün bitti!'}</p>
+        </div>
+    `;
+    document.getElementById('dynamic-content').innerHTML = html;
+    updateMascotText('Rutinler disiplinli olmamıza yardımcı olur! Hangi aktiviteyi en çok seviyorsun?');
+}
+
+function renderBadges() {
+    const unlockedCount = achievements.length;
+    const totalBadges = badgesData.length;
+    
+    const html = `
+        <h2>🏆 Rozetlerim</h2>
+        <p>Başarılarını rozetlerle göster!</p>
+        
+        <div class="badge-grid">
+            ${badgesData.map((badge, index) => {
+                const isUnlocked = achievements.includes(badge.id);
+                return `
+                    <div class="badge-card ${isUnlocked ? 'unlocked' : ''}" onclick="showBadgeInfo(${index})">
+                        <div class="badge-icon">${badge.icon}</div>
+                        <div style="font-weight:bold; margin-top:10px;">${badge.name}</div>
+                        <div style="font-size:0.8em; color:#666; margin-top:5px;">${badge.requirement}</div>
+                        <div style="margin-top:5px;">${isUnlocked ? '✅ Kazanıldı' : '🔒 Kilitli'}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        
+        <div style="background:#fff3e0; padding:20px; border-radius:15px; margin:20px auto; max-width:500px;">
+            <h3>🎖️ İlerleme Durumu</h3>
+            <p>Kazanılan Rozetler: ${unlockedCount}/${totalBadges}</p>
+            <div style="height:20px; background:#ddd; border-radius:10px; margin:10px 0; overflow:hidden;">
+                <div style="height:100%; width:${(unlockedCount/totalBadges)*100}%; background:#4CAF50; transition:width 0.5s;"></div>
+            </div>
+            <p>Tüm rozetleri kazanmak için çalışmaya devam et!</p>
+        </div>
+    `;
+    document.getElementById('dynamic-content').innerHTML = html;
+    updateMascotText(`Harika! ${unlockedCount} rozet kazandın. Tüm rozetleri toplamaya ne dersin?`);
+}
+
+// ===== YARDIMCI FONKSİYONLAR =====
+function getGameIcon(type) {
+    const icons = {
+        'memory': '🧠',
+        'math': '➕',
+        'balloon': '🎈',
+        'xox': '❌',
+        'sentence': '✍️',
+        'shape': '🔶',
+        'color': '🌈',
+        'sound': '🔊',
+        'puzzle': '🧩',
+        'maze': '🌀'
+    };
+    return icons[type] || '🎮';
+}
+
+function getPlanetColor(planetName) {
+    const colors = {
+        'Güneş': '#FFD700',
+        'Merkür': '#A9A9A9',
+        'Venüs': '#FFA500',
+        'Dünya': '#4169E1',
+        'Mars': '#FF4500',
+        'Jüpiter': '#FFDAB9',
+        'Satürn': '#F0E68C',
+        'Uranüs': '#AFEEEE',
+        'Neptün': '#1E90FF',
+        'Ay': '#D3D3D3'
+    };
+    return colors[planetName] || '#FFFFFF';
+}
+
+function updateMascotText(text) {
+    const mascotText = document.getElementById('mascot-text');
+    if (mascotText) {
+        mascotText.textContent = text;
+        if (isVoiceOn) {
+            speak(text);
+        }
+    }
+}
+
+function playGreeting() {
+    const greetings = [
+        "Merhaba Mete! Bugün harika şeyler öğreneceğiz!",
+        "Hey Mete! Hazır mısın maceraya?",
+        "Günaydın küçük dahı! Bugün ne öğrenmek istersin?",
+        "Mete! Seni görmek ne güzel! Hadi eğlenelim!",
+        "Hazır mısın öğrenmeye? Ben çok heyecanlıyım!"
+    ];
+    const randomGreeting = greetings[Math.floor(Math.random() * greetings.length)];
+    updateMascotText(randomGreeting);
+    sounds.win();
+}
+
+function openSettings() {
+    document.getElementById('settings-modal').style.display = 'flex';
+}
+
+function closeSettings() {
+    document.getElementById('settings-modal').style.display = 'none';
+}
+
+function toggleNightMode() {
+    isNightMode = !isNightMode;
+    document.body.classList.toggle('night-mode', isNightMode);
+    document.getElementById('night-mode-toggle').checked = isNightMode;
+    showNotification(isNightMode ? 'Gece modu açıldı 🌙' : 'Gece modu kapatıldı ☀️');
+    saveProgress();
+}
+
+// ===== HARFLER FONKSİYONLARI =====
+let currentLetterIndex = 0;
+
+function nextLetter() {
+    currentLetterIndex = (currentLetterIndex + 1) % alphabetData.length;
+    gameScores.letterIndex = currentLetterIndex;
+    renderLetters();
+    sounds.click();
+}
+
+function prevLetter() {
+    currentLetterIndex = (currentLetterIndex - 1 + alphabetData.length) % alphabetData.length;
+    gameScores.letterIndex = currentLetterIndex;
+    renderLetters();
+    sounds.click();
+}
+
+function selectLetter(index) {
+    currentLetterIndex = index;
+    gameScores.letterIndex = currentLetterIndex;
+    renderLetters();
+    sounds.click();
+}
+
+function speakLetter() {
+    const letter = alphabetData[currentLetterIndex];
+    speak(`${letter.letter} harfi. ${letter.word} kelimesi ${letter.letter} harfi ile başlar.`);
+}
+
+// ===== SAYILAR FONKSİYONLARI =====
+let currentNumberIndex = 0;
+
+function nextNumber() {
+    currentNumberIndex = (currentNumberIndex + 1) % numbersData.length;
+    gameScores.numberIndex = currentNumberIndex;
+    renderNumbers();
+    sounds.click();
+}
+
+function prevNumber() {
+    currentNumberIndex = (currentNumberIndex - 1 + numbersData.length) % numbersData.length;
+    gameScores.numberIndex = currentNumberIndex;
+    renderNumbers();
+    sounds.click();
+}
+
+function selectNumber(index) {
+    currentNumberIndex = index;
+    gameScores.numberIndex = currentNumberIndex;
+    renderNumbers();
+    sounds.click();
+}
+
+function speakNumber() {
+    const number = numbersData[currentNumberIndex];
+    speak(`${number.word} sayısı ${number.number}. Resimde ${number.number} tane nesne var.`);
+}
+
+// ===== ÇİZİM FONKSİYONLARI =====
+function initCanvas() {
+    canvas = document.getElementById('canvas');
+    ctx = canvas.getContext('2d');
+    
+    // Canvas boyutlarını ayarla
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+    
+    // Çizim olaylarını bağla
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('mouseout', stopDrawing);
+    
+    // Touch olayları
+    canvas.addEventListener('touchstart', handleTouchStart);
+    canvas.addEventListener('touchmove', handleTouchMove);
+    canvas.addEventListener('touchend', stopDrawing);
+    
+    // Başlangıç çizim ayarları
+    ctx.lineWidth = brushSize;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.strokeStyle = drawColor;
+}
+
+function resizeCanvas() {
+    if (!canvas) return;
+    const parent = canvas.parentElement;
+    canvas.width = parent.clientWidth;
+    canvas.height = parent.clientHeight;
+    
+    // Beyaz arka plan
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+
+function startDrawing(e) {
+    isDrawing = true;
+    [lastX, lastY] = getMousePos(e);
+}
+
+function draw(e) {
+    if (!isDrawing) return;
+    
+    e.preventDefault();
+    const [x, y] = getMousePos(e);
+    
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+    ctx.lineTo(x, y);
+    ctx.stroke();
+    
+    [lastX, lastY] = [x, y];
+}
+
+function stopDrawing() {
+    isDrawing = false;
+}
+
+function getMousePos(e) {
+    const rect = canvas.getBoundingClientRect();
+    let x, y;
+    
+    if (e.type.includes('touch')) {
+        x = e.touches[0].clientX - rect.left;
+        y = e.touches[0].clientY - rect.top;
+    } else {
+        x = e.clientX - rect.left;
+        y = e.clientY - rect.top;
+    }
+    
+    return [x, y];
+}
+
+function handleTouchStart(e) {
+    e.preventDefault();
+    startDrawing(e.touches[0]);
+}
+
+function handleTouchMove(e) {
+    e.preventDefault();
+    draw(e.touches[0]);
+}
+
+function setColor(color) {
+    drawColor = color;
+    ctx.strokeStyle = color;
+    sounds.click();
+}
+
+function changeBrushSize(size) {
+    brushSize = parseInt(size);
+    ctx.lineWidth = brushSize;
+    document.getElementById('brush-size-label').textContent = `Boyut: ${size}`;
+}
+
+function clearCanvas() {
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    sounds.click();
+}
+
+function saveDrawing() {
+    const dataURL = canvas.toDataURL('image/png');
+    const link = document.createElement('a');
+    link.download = 'mete-cizim.png';
+    link.href = dataURL;
+    link.click();
+    showNotification('Çizim kaydedildi! 📁', 'success');
+    sounds.win();
+}
+
+function closeDrawing() {
+    document.getElementById('drawing-area').style.display = 'none';
+    document.getElementById('main-container').style.display = 'block';
+}
+
+// ===== SAAT FONKSİYONLARI =====
+function setCurrentTime() {
+    const now = new Date();
+    const hours = now.getHours() % 12;
+    const minutes = now.getMinutes();
+    
+    updateClock(hours, minutes);
+    updateDigitalClock(hours, minutes);
+}
+
+function setRandomTime() {
+    const hours = Math.floor(Math.random() * 12);
+    const minutes = Math.floor(Math.random() * 60);
+    
+    updateClock(hours, minutes);
+    updateDigitalClock(hours, minutes);
+    sounds.click();
+}
+
+function updateClock(hours, minutes) {
+    const hourHand = document.getElementById('hour-hand');
+    const minuteHand = document.getElementById('minute-hand');
+    
+    const hourAngle = (hours * 30) + (minutes * 0.5);
+    const minuteAngle = minutes * 6;
+    
+    hourHand.style.transform = `rotate(${hourAngle}deg)`;
+    minuteHand.style.transform = `rotate(${minuteAngle}deg)`;
+}
+
+function updateDigitalClock(hours, minutes) {
+    const displayHours = hours === 0 ? 12 : hours;
+    const displayMinutes = minutes.toString().padStart(2, '0');
+    document.getElementById('digital-clock').textContent = 
+        `${displayHours}:${displayMinutes}`;
+}
+
+// ===== PİYANO FONKSİYONLARI =====
+function playPianoNote(index) {
+    if (!isSoundOn) return;
+    
+    const frequencies = [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88, 523.25, 277.18, 311.13, 369.99, 415.30, 466.16];
+    const frequency = frequencies[index] || 261.63;
+    
+    playTone(frequency, 0.5, 'sine');
+    
+    // Tuş animasyonu
+    const keys = document.querySelectorAll('.key');
+    if (keys[index]) {
+        keys[index].classList.add('active');
+        setTimeout(() => keys[index].classList.remove('active'), 200);
+    }
+}
+
+function playMelody(type) {
+    const melodies = {
+        'twinkle': [0, 0, 4, 4, 5, 5, 4, 3, 3, 2, 2, 1, 1, 0],
+        'happy': [0, 0, 1, 0, 3, 2, 0, 0, 1, 0, 4, 3],
+        'mary': [2, 1, 0, 1, 2, 2, 2, 1, 1, 1, 2, 4, 4]
+    };
+    
+    const melody = melodies[type] || melodies.twinkle;
+    let delay = 0;
+    
+    melody.forEach((note, index) => {
+        setTimeout(() => {
+            playPianoNote(note);
+        }, delay);
+        delay += 500; // 0.5 saniye aralıklarla
+    });
+    
+    updateMascotText('Harika çalıyorsun! Müzik yeteneğin gelişiyor! 🎵');
+}
+
+function playInstrument(instrument) {
+    const frequencies = {
+        'piano': [261.63, 'sine'],
+        'guitar': [196.00, 'sawtooth'],
+        'drums': [100, 'square'],
+        'violin': [440.00, 'sine']
+    };
+    
+    const [freq, type] = frequencies[instrument] || [261.63, 'sine'];
+    playTone(freq, 1, type);
+    
+    const instrumentNames = {
+        'piano': 'Piyano',
+        'guitar': 'Gitar',
+        'drums': 'Davul',
+        'violin': 'Keman'
+    };
+    
+    speak(`${instrumentNames[instrument]} sesi`);
+}
+
+// ===== HİKAYE FONKSİYONLARI =====
+function startStory(index) {
+    const story = storiesData[index];
+    currentStory = story.title;
+    currentSentences = story.sentences;
+    currentSentenceIndex = 0;
+    
+    // Hikaye oynatıcıyı göster
+    const player = document.getElementById('story-player');
+    player.style.display = 'flex';
+    
+    // Oyun alanını gizle
+    document.getElementById('game-area').style.display = 'none';
+    
+    // Hikaye bilgilerini ayarla
+    document.getElementById('story-title').textContent = story.title;
+    document.getElementById('story-text').textContent = currentSentences[0];
+    document.getElementById('story-playpause').innerHTML = '⏸ Durdur';
+    
+    // İlk cümleyi seslendir
+    speak(currentSentences[0]);
+    
+    // İlerleme çubuğunu güncelle
+    updateStoryProgress();
+    
+    // Oto-play başlat
+    isStoryPlaying = true;
+    startStoryAutoPlay();
+}
+
+function startStoryAutoPlay() {
+    if (storyInterval) clearInterval(storyInterval);
+    
+    storyInterval = setInterval(() => {
+        if (isStoryPlaying) {
+            nextStorySentence();
+        }
+    }, 5000); // Her 5 saniyede bir cümle
+}
+
+function toggleStoryPlay() {
+    isStoryPlaying = !isStoryPlaying;
+    const button = document.getElementById('story-playpause');
+    
+    if (isStoryPlaying) {
+        button.innerHTML = '⏸ Durdur';
+        startStoryAutoPlay();
+    } else {
+        button.innerHTML = '▶️ Devam Et';
+        clearInterval(storyInterval);
+    }
+}
+
+function nextStorySentence() {
+    if (currentSentenceIndex < currentSentences.length - 1) {
+        currentSentenceIndex++;
+        document.getElementById('story-text').textContent = currentSentences[currentSentenceIndex];
+        speak(currentSentences[currentSentenceIndex]);
+        updateStoryProgress();
+    } else {
+        // Hikaye bitti
+        closeStoryPlayer();
+        showNotification('Hikaye bitti! Tebrikler! 🎉', 'success');
+        awardBadge(6); // Hikaye sever rozeti
+    }
+}
+
+function prevStorySentence() {
+    if (currentSentenceIndex > 0) {
+        currentSentenceIndex--;
+        document.getElementById('story-text').textContent = currentSentences[currentSentenceIndex];
+        speak(currentSentences[currentSentenceIndex]);
+        updateStoryProgress();
+    }
+}
+
+function updateStoryProgress() {
+    const progress = ((currentSentenceIndex + 1) / currentSentences.length) * 100;
+    document.getElementById('story-progress').style.width = `${progress}%`;
+    
+    // Zaman bilgisi
+    const currentTime = Math.floor((currentSentenceIndex + 1) * 5);
+    const totalTime = Math.floor(currentSentences.length * 5);
+    document.getElementById('story-time').textContent = 
+        `${Math.floor(currentTime/60)}:${(currentTime%60).toString().padStart(2,'0')} / ` +
+        `${Math.floor(totalTime/60)}:${(totalTime%60).toString().padStart(2,'0')}`;
+}
+
+function closeStoryPlayer() {
+    const player = document.getElementById('story-player');
+    player.style.display = 'none';
+    document.getElementById('game-area').style.display = 'flex';
+    
+    if (storyInterval) {
+        clearInterval(storyInterval);
+        storyInterval = null;
+    }
+    isStoryPlaying = false;
+}
+
+// ===== OYUN FONKSİYONLARI =====
+function startGame(gameType) {
+    switch(gameType) {
+        case 'memory':
+            startMemoryGame();
+            break;
+        case 'math':
+            startMathGame();
+            break;
+        case 'balloon':
+            startBalloonGame();
+            break;
+        case 'xox':
+            startXOXGame();
+            break;
+        case 'sentence':
+            startSentenceGame();
+            break;
+        case 'shape':
+            startShapeMatchingGame();
+            break;
+        case 'color':
+            startColorGame();
+            break;
+        case 'sound':
+            startSoundGame();
+            break;
+        case 'puzzle':
+            startPuzzleGame();
+            break;
+        case 'maze':
+            startMazeGame();
+            break;
+    }
+}
+
+function startMemoryGame() {
+    const cards = ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼'];
+    const gameCards = [...cards, ...cards].sort(() => Math.random() - 0.5);
+    
+    let html = `
+        <h2>🧠 Hafıza Oyunu</h2>
+        <p>Kartları eşleştirerek hafızanı geliştir!</p>
+        <div class="memory-grid" id="memory-grid"></div>
+        <div style="margin-top:20px;">
+            <div id="score">Puan: 0</div>
+            <div id="timer">Süre: 60 saniye</div>
+        </div>
+        <button class="nav-btn" onclick="renderGames()" style="margin-top:20px;">🔙 Geri</button>
+    `;
+    
+    document.getElementById('dynamic-content').innerHTML = html;
+    
+    // Kartları oluştur
+    const grid = document.getElementById('memory-grid');
+    gameCards.forEach((emoji, index) => {
+        const card = document.createElement('div');
+        card.className = 'memory-card';
+        card.dataset.emoji = emoji;
+        card.dataset.index = index;
+        card.textContent = '?';
+        card.onclick = () => flipCard(card);
+        grid.appendChild(card);
+    });
+    
+    updateMascotText('Kartları eşleştirerek hafızanı test et! İyi şanslar!');
+}
+
+function startMathGame() {
+    // Rastgele matematik sorusu oluştur
+    const num1 = Math.floor(Math.random() * 10) + 1;
+    const num2 = Math.floor(Math.random() * 10) + 1;
+    const operations = ['+', '-'];
+    const operation = operations[Math.floor(Math.random() * operations.length)];
+    
+    let correctAnswer;
+    if (operation === '+') {
+        correctAnswer = num1 + num2;
+    } else {
+        correctAnswer = num1 - num2;
+        // Negatif çıkmaması için
+        if (correctAnswer < 0) {
+            correctAnswer = num1 + num2;
+        }
+    }
+    
+    // Yanlış cevaplar oluştur
+    let answers = [correctAnswer];
+    while (answers.length < 4) {
+        const wrongAnswer = correctAnswer + Math.floor(Math.random() * 5) - 2;
+        if (wrongAnswer !== correctAnswer && wrongAnswer > 0 && !answers.includes(wrongAnswer)) {
+            answers.push(wrongAnswer);
+        }
+    }
+    answers = answers.sort(() => Math.random() - 0.5);
+    
+    const html = `
+        <h2>➕ Matematik Oyunu</h2>
+        <p>Doğru cevabı bul!</p>
+        
+        <div class="math-question">${num1} ${operation} ${num2} = ?</div>
+        
+        <div class="math-options">
+            ${answers.map((answer, index) => `
+                <div class="math-option" onclick="checkMathAnswer(${answer}, ${correctAnswer})">${answer}</div>
+            `).join('')}
+        </div>
+        
+        <div id="math-feedback" style="font-size:1.5em; margin:20px;"></div>
+        
+        <button class="nav-btn" onclick="startMathGame()" style="margin-top:20px;">🔄 Yeni Soru</button>
+        <button class="nav-btn" onclick="renderGames()" style="margin-top:20px;">🔙 Geri</button>
+    `;
+    
+    document.getElementById('dynamic-content').innerHTML = html;
+    updateMascotText(`Matematik zamanı! ${num1} ${operation} ${num2} kaç eder?`);
+}
+
+function checkMathAnswer(selected, correct) {
+    const feedback = document.getElementById('math-feedback');
+    
+    if (selected === correct) {
+        feedback.textContent = '✅ Doğru! Harikasın!';
+        feedback.style.color = '#4CAF50';
+        sounds.correct();
+        
+        // Puan ekle
+        gameScores.math = (gameScores.math || 0) + 10;
+        saveProgress();
+        
+        // Rozet kontrolü
+        if ((gameScores.math || 0) >= 200) {
+            awardBadge(5); // Matematik dehası rozeti
+        }
+        
+        // 2 saniye sonra yeni soru
+        setTimeout(() => startMathGame(), 2000);
+    } else {
+        feedback.textContent = `❌ Yanlış. Doğru cevap: ${correct}`;
+        feedback.style.color = '#F44336';
+        sounds.wrong();
+    }
+}
+
+function startBalloonGame() {
+    const html = `
+        <h2>🎈 Balon Patlatma Oyunu</h2>
+        <p>Balonları tıkla ve patlat!</p>
+        
+        <div id="balloon-container"></div>
+        
+        <div style="margin-top:20px;">
+            <div id="balloon-score">Patlatılan Balonlar: 0</div>
+            <div id="balloon-timer">Süre: 30 saniye</div>
+        </div>
+        
+        <button class="nav-btn" onclick="startBalloonGame()" style="margin-top:20px;">🔄 Yeniden Başlat</button>
+        <button class="nav-btn" onclick="renderGames()" style="margin-top:20px;">🔙 Geri</button>
+    `;
+    
+    document.getElementById('dynamic-content').innerHTML = html;
+    
+    let score = 0;
+    let timeLeft = 30;
+    const container = document.getElementById('balloon-container');
+    
+    // Balon oluşturma fonksiyonu
+    function createBalloon() {
+        const balloon = document.createElement('div');
+        balloon.className = 'balloon';
+        
+        // Rastgele renk
+        const colors = ['#FF5252', '#FF4081', '#E040FB', '#7C4DFF', '#536DFE', '#448AFF', '#40C4FF', '#18FFFF', '#64FFDA', '#69F0AE'];
+        balloon.style.background = colors[Math.floor(Math.random() * colors.length)];
+        
+        // Rastgele boyut
+        const size = Math.random() * 30 + 40;
+        balloon.style.width = `${size}px`;
+        balloon.style.height = `${size * 1.4}px`;
+        
+        // Rastgele pozisyon
+        balloon.style.left = `${Math.random() * (container.clientWidth - 50)}px`;
+        
+        // Rastgele hız
+        const speed = Math.random() * 3 + 2;
+        balloon.style.animationDuration = `${speed}s`;
+        
+        // Rastgele sayı (1-10)
+        const number = Math.floor(Math.random() * 10) + 1;
+        balloon.textContent = number;
+        
+        // Tıklama olayı
+        balloon.onclick = function() {
+            sounds.balloonPop();
+            score++;
+            document.getElementById('balloon-score').textContent = `Patlatılan Balonlar: ${score}`;
+            this.remove();
+            createBalloon(); // Yeni balon oluştur
+        };
+        
+        container.appendChild(balloon);
+        
+        // Balon yukarı çıktıktan sonra kaldır
+        setTimeout(() => {
+            if (balloon.parentNode === container) {
+                balloon.remove();
+                createBalloon();
+            }
+        }, speed * 1000);
+    }
+    
+    // Başlangıçta 5 balon oluştur
+    for (let i = 0; i < 5; i++) {
+        setTimeout(() => createBalloon(), i * 500);
+    }
+    
+    // Zamanlayıcı
+    const timer = setInterval(() => {
+        timeLeft--;
+        document.getElementById('balloon-timer').textContent = `Süre: ${timeLeft} saniye`;
+        
+        if (timeLeft <= 0) {
+            clearInterval(timer);
+            showNotification(`Oyun bitti! ${score} balon patlattın! 🎈`, 'success');
+        }
+    }, 1000);
+    
+    updateMascotText('Balonları hızlıca patlat! Ne kadar çok patlatırsan o kadar iyi!');
+}
+
+// ===== HAYVAN FONKSİYONLARI =====
+function feedPet() {
+    virtualPet.hunger = Math.min(100, virtualPet.hunger + 20);
+    virtualPet.happiness = Math.min(100, virtualPet.happiness + 10);
+    virtualPet.energy = Math.min(100, virtualPet.energy + 5);
+    
+    // XP kazan
+    virtualPet.xp += 10;
+    checkPetLevelUp();
+    
+    showNotification(`${virtualPet.name} doyuruldu! 🍎`, 'success');
+    sounds.correct();
+    saveProgress();
+    renderPet();
+}
+
+function playWithPet() {
+    virtualPet.happiness = Math.min(100, virtualPet.happiness + 25);
+    virtualPet.energy = Math.max(0, virtualPet.energy - 15);
+    
+    // XP kazan
+    virtualPet.xp += 15;
+    checkPetLevelUp();
+    
+    showNotification(`${virtualPet.name} ile oynandı! 🎾`, 'success');
+    sounds.correct();
+    saveProgress();
+    renderPet();
+}
+
+function restPet() {
+    virtualPet.energy = Math.min(100, virtualPet.energy + 30);
+    virtualPet.hunger = Math.max(0, virtualPet.hunger - 10);
+    
+    showNotification(`${virtualPet.name} uyudu! 😴`, 'success');
+    sounds.correct();
+    saveProgress();
+    renderPet();
+}
+
+function cleanPet() {
+    virtualPet.happiness = Math.min(100, virtualPet.happiness + 15);
+    
+    showNotification(`${virtualPet.name} temizlendi! 🚿`, 'success');
+    sounds.correct();
+    saveProgress();
+    renderPet();
+}
+
+function renamePet() {
+    const newName = prompt('Hayvanına yeni bir isim ver:', virtualPet.name);
+    if (newName && newName.trim() !== '') {
+        virtualPet.name = newName.trim();
+        showNotification(`İsim değiştirildi: ${virtualPet.name} 🏷️`, 'success');
+        saveProgress();
+        renderPet();
+    }
+}
+
+function changePetType() {
+    const types = ['🐶', '🐱', '🐰', '🐹', '🐤', '🐸', '🐢', '🐻'];
+    const randomType = types[Math.floor(Math.random() * types.length)];
+    virtualPet.type = randomType;
+    
+    showNotification(`Hayvan değiştirildi: ${virtualPet.type}`, 'success');
+    sounds.correct();
+    saveProgress();
+    renderPet();
+}
+
+function checkPetLevelUp() {
+    const xpNeeded = virtualPet.level * 100;
+    if (virtualPet.xp >= xpNeeded) {
+        virtualPet.level++;
+        virtualPet.xp = virtualPet.xp - xpNeeded;
+        showNotification(`Tebrikler! ${virtualPet.name} seviye atladı: ${virtualPet.level} 🎉`, 'success');
+        sounds.win();
+    }
+}
+
+// ===== ROZET FONKSİYONLARI =====
+function awardBadge(badgeId) {
+    if (!achievements.includes(badgeId)) {
+        achievements.push(badgeId);
+        saveProgress();
+        
+        const badge = badgesData.find(b => b.id === badgeId);
+        if (badge) {
+            showNotification(`Yeni rozet kazandın: ${badge.name} ${badge.icon}`, 'success');
+            sounds.win();
+            
+            // Tüm rozetler kazanıldı mı?
+            if (achievements.length === badgesData.length) {
+                showNotification('Tebrikler! Tüm rozetleri kazandın! 🏆', 'success');
+            }
+        }
+    }
+}
+
+function showBadgeInfo(index) {
+    const badge = badgesData[index];
+    const isUnlocked = achievements.includes(badge.id);
+    
+    alert(`${badge.icon} ${badge.name}\n\n${badge.requirement}\n\nDurum: ${isUnlocked ? '✅ Kazanıldı' : '🔒 Kilitli'}`);
+}
+
+// ===== RUTİN FONKSİYONLARI =====
+function toggleRoutine(index) {
+    routineData[index].completed = !routineData[index].completed;
+    renderRoutine();
+    sounds.click();
+}
+
+function completeAllRoutines() {
+    routineData.forEach(activity => activity.completed = true);
+    showNotification('Tüm rutinler tamamlandı! ✅', 'success');
+    renderRoutine();
+}
+
+function resetRoutines() {
+    routineData.forEach(activity => activity.completed = false);
+    showNotification('Rutinler sıfırlandı! 🔄', 'success');
+    renderRoutine();
+}
+
+// ===== DİĞER OYUN FONKSİYONLARI =====
+function startWordGame() {
+    // Basit bir kelime oyunu
+    const words = ['ELMA', 'ARABA', 'EV', 'KEDI', 'TOP', 'KITAP', 'KALEM', 'SU'];
+    const word = words[Math.floor(Math.random() * words.length)];
+    const scrambled = word.split('').sort(() => Math.random() - 0.5).join('');
+    
+    const html = `
+        <h2>🔤 Kelime Oyunu</h2>
+        <p>Karışık harfleri düzenleyerek kelimeyi bul!</p>
+        
+        <div style="font-size:3em; margin:30px; letter-spacing:10px;">${scrambled}</div>
+        
+        <div style="margin:20px;">
+            <input type="text" id="word-guess" placeholder="Kelimeyi yaz..." style="font-size:1.5em; padding:10px; width:200px;">
+            <button class="nav-btn" onclick="checkWordGuess('${word}')">✅ Kontrol Et</button>
+        </div>
+        
+        <div id="word-feedback" style="font-size:1.5em; margin:20px;"></div>
+        
+        <button class="nav-btn" onclick="startWordGame()">🔄 Yeni Kelime</button>
+        <button class="nav-btn" onclick="renderLetters()">🔙 Geri</button>
+    `;
+    
+    document.getElementById('dynamic-content').innerHTML = html;
+    updateMascotText('Harfleri düzenle ve kelimeyi bul! İpucu: Bu bir ${word.length} harfli kelime!');
+}
+
+function checkWordGuess(correctWord) {
+    const guess = document.getElementById('word-guess').value.toUpperCase();
+    const feedback = document.getElementById('word-feedback');
+    
+    if (guess === correctWord) {
+        feedback.textContent = '✅ Harika! Doğru kelimeyi buldun!';
+        feedback.style.color = '#4CAF50';
+        sounds.correct();
+        
+        // Puan ekle
+        gameScores.word = (gameScores.word || 0) + 20;
+        saveProgress();
+        
+        // 2 saniye sonra yeni kelime
+        setTimeout(() => startWordGame(), 2000);
+    } else {
+        feedback.textContent = '❌ Tekrar dene!';
+        feedback.style.color = '#F44336';
+        sounds.wrong();
+    }
+}
+
+// ===== SİSTEM FONKSİYONLARI =====
+function resetGameScores() {
+    if (confirm('Tüm oyun skorlarını sıfırlamak istediğine emin misin?')) {
+        gameScores = {};
+        saveProgress();
+        showNotification('Skorlar sıfırlandı! 🔄', 'success');
+        renderGames();
+    }
+}
+
+// ===== BAŞLANGIÇ FONKSİYONLARI =====
+function initializeApp() {
+    // İlerlemeyi yükle
+    loadProgress();
+    
+    // Gece modu kontrolü
+    const savedNightMode = localStorage.getItem('meteNightMode');
+    if (savedNightMode === 'true') {
+        toggleNightMode();
+    }
+    
+    // Hoş geldin mesajı
+    setTimeout(() => {
+        updateMascotText('Mete\'nin Eğitici Dünyasına Hoş Geldin! 🎉');
+    }, 1000);
+    
+    // Canvas başlatma (eğer varsa)
+    if (document.getElementById('canvas')) {
+        initCanvas();
+    }
+    
+    // Süre takibi başlat
+    startPlayTimeTracking();
+}
+
+function startPlayTimeTracking() {
+    // Oynama süresi takibi
+    let playTime = parseInt(localStorage.getItem('totalPlayTime') || '0');
+    
+    setInterval(() => {
+        playTime++;
+        localStorage.setItem('totalPlayTime', playTime.toString());
+        
+        // Her 30 dakikada bir rozet kontrolü
+        if (playTime % 1800 === 0) {
+            showNotification('Uzun süredir oynuyorsun, biraz mola ver! ⏰', 'warning');
+        }
+    }, 1000);
+}
+
+function startDailyChallenge() {
+    const challenges = [
+        { type: 'letters', count: 5, description: '5 harf öğren' },
+        { type: 'numbers', count: 5, description: '5 sayı öğren' },
+        { type: 'colors', count: 3, description: '3 renk öğren' },
+        { type: 'animals', count: 5, description: '5 hayvan öğren' },
+        { type: 'games', count: 2, description: '2 oyun oyna' }
+    ];
+    
+    const randomChallenge = challenges[Math.floor(Math.random() * challenges.length)];
+    
+    const html = `
+        <h2>🌟 Bugünün Meydan Okuması</h2>
+        <div style="background:#FFF8E1; padding:20px; border-radius:15px; margin:20px auto; max-width:400px;">
+            <h3>${randomChallenge.description}</h3>
+            <p>Bu meydan okumayı tamamla ve ödül kazan!</p>
+        </div>
+        
+        <div style="margin:30px;">
+            <button class="nav-btn" onclick="acceptChallenge('${randomChallenge.type}', ${randomChallenge.count})">
+                ✅ Kabul Et
+            </button>
+            <button class="nav-btn" onclick="renderHome()">❌ Vazgeç</button>
+        </div>
+        
+        <div style="background:#E8F5E9; padding:15px; border-radius:15px; margin:20px auto; max-width:400px;">
+            <h4>🎁 Ödül</h4>
+            <p>Meydan okumayı tamamlayınca:</p>
+            <ul style="text-align:left; margin:10px 0;">
+                <li>⭐ 50 XP</li>
+                <li>🎖️ Özel rozet şansı</li>
+                <li>🎉 Tebrik mesajı</li>
+            </ul>
+        </div>
+    `;
+    
+    document.getElementById('dynamic-content').innerHTML = html;
+    updateMascotText(`Bugünün meydan okuması: ${randomChallenge.description}! Kabul ediyor musun?`);
+}
+
+function acceptChallenge(type, count) {
+    showNotification('Meydan okuma kabul edildi! Başarılar! 🚀', 'success');
+    
+    // İlgili bölüme yönlendir
+    switch(type) {
+        case 'letters':
+            showSection('letters');
+            break;
+        case 'numbers':
+            showSection('numbers');
+            break;
+        case 'colors':
+            showSection('colors');
+            break;
+        case 'animals':
+            showSection('animals');
+            break;
+        case 'games':
+            showSection('games');
+            break;
+        default:
+            renderHome();
+    }
+}
+
+// ===== SAYFA YÜKLENDİĞİNDE =====
+document.addEventListener('DOMContentLoaded', initializeApp);
+
+// ===== JAVASCRIPT SONU =====
+</script>
+</body>
+</html>
