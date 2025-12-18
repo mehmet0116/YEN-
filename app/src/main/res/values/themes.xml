@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Base application theme. -->
-    <style name="Theme.MeteCocuk" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.MeteninEgiticiDunyasi" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primary_color</item>
         <item name="colorPrimaryVariant">@color/primary_dark</item>
@@ -36,7 +36,7 @@
     </style>
     
     <!-- Splash screen theme -->
-    <style name="Theme.MeteCocuk.Splash" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="Theme.MeteninEgiticiDunyasi.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/splash_background</item>
         <item name="android:windowFullscreen">true</item>
     </style>
