@@ -14,5 +14,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Mete'nin Eğitici Dünyası"
+rootProject.name = "Metenin Egitici Dunyasi"
 include ':app'
