@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App name -->
+    <string name="app_name">Mete\'nin Eğlence Dünyası</string>
+    
+    <!-- Welcome messages -->
+    <string name="welcome_title">Hoş Geldin Mete!</string>
+    <string name="welcome_subtitle">5 Yaşında Süper Bir Çocuksun!</string>
+    <string name="welcome_message">Merhaba Mete! Senin için hazırladığımız eğlenceli oyunlara hoş geldin. Hadi birlikte öğrenelim ve eğlenelim!</string>
+    
+    <!-- Navigation -->
+    <string name="home">Ana Sayfa</string>
+    <string name="games">Oyunlar</string>
+    <string name="learning">Öğrenme</string>
+    <string name="music">Müzik</string>
+    <string name="stories">Hikayeler</string>
+    
+    <!-- Games -->
+    <string name="game_colors">Renkleri Öğren</string>
+    <string name="game_shapes">Şekilleri Tanı</string>
+    <string name="game_numbers">Sayıları Say</string>
+    <string name="game_animals">Hayvanları Keşfet</string>
+    <string name="game_puzzle">Puzzle Oyna</string>
+    
+    <!-- Learning activities -->
+    <string name="learn_abc">ABC Öğren</string>
+    <string name="learn_123">123 Say</string>
+    <string name="learn_colors">Renkler</string>
+    <string name="learn_shapes">Şekiller</string>
+    <string name="learn_animals">Hayvanlar</string>
+    
+    <!-- Buttons -->
+    <string name="btn_start">Başla</string>
+    <string name="btn_next">Sonraki</string>
+    <string name="btn_back">Geri</string>
+    <string name="btn_home">Ana Sayfa</string>
+    <string name="btn_play">Oyna</string>
+    <string name="btn_listen">Dinle</string>
+    <string name="btn_repeat">Tekrarla</string>
+    
+    <!-- Messages -->
+    <string name="congratulations">Tebrikler Mete!</string>
+    <string name="great_job">Harika İş Çıkardın!</string>
+    <string name="try_again">Tekrar Dene</string>
+    <string name="perfect">Mükemmel!</string>
+    
+    <!-- Animal names -->
+    <string name="animal_lion">Aslan</string>
+    <string name="animal_elephant">Fil</string>
+    <string name="animal_giraffe">Zürafa</string>
+    <string name="animal_monkey">Maymun</string>
+    <string name="animal_bird">Kuş</string>
+    
+    <!-- Color names -->
+    <string name="color_red">Kırmızı</string>
+    <string name="color_blue">Mavi</string>
+    <string name="color_yellow">Sarı</string>
+    <string name="color_green">Yeşil</string>
+    <string name="color_orange">Turuncu</string>
+    
+    <!-- Shape names -->
+    <string name="shape_circle">Daire</string>
+    <string name="shape_square">Kare</string>
+    <string name="shape_triangle">Üçgen</string>
+    <string name="shape_rectangle">Dikdörtgen</string>
+    <string name="shape_star">Yıldız</string>
+    
+    <!-- Instructions -->
+    <string name="instruction_tap">Dokun</string>
+    <string name="instruction_drag">Sürükle</string>
+    <string name="instruction_match">Eşleştir</string>
+    <string name="instruction_listen">Dinle ve Tekrarla</string>
+    
+    <!-- Settings -->
+    <string name="settings">Ayarlar</string>
+    <string name="sound_on">Ses Açık</string>
+    <string name="sound_off">Ses Kapalı</string>
+    <string name="music_on">Müzik Açık</string>
+    <string name="music_off">Müzik Kapalı</string>
+    
+    <!-- Parent section -->
+    <string name="parent_section">Ebeveyn Köşesi</string>
+    <string name="progress">İlerleme</string>
+    <string name="achievements">Başarılar</string>
+</resources>

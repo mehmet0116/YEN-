@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Padding and margin values -->
+    <dimen name="padding_small">8dp</dimen>
+    <dimen name="padding_medium">16dp</dimen>
+    <dimen name="padding_large">24dp</dimen>
+    <dimen name="padding_xlarge">32dp</dimen>
+    
+    <!-- Text sizes for kids (larger than normal) -->
+    <dimen name="text_xsmall">14sp</dimen>
+    <dimen name="text_small">16sp</dimen>
+    <dimen name="text_medium">20sp</dimen>
+    <dimen name="text_large">24sp</dimen>
+    <dimen name="text_xlarge">32sp</dimen>
+    <dimen name="text_xxlarge">48sp</dimen>
+    
+    <!-- Button sizes -->
+    <dimen name="button_height">60dp</dimen>
+    <dimen name="button_width_min">120dp</dimen>
+    <dimen name="button_corner_radius">30dp</dimen>
+    
+    <!-- Icon sizes -->
+    <dimen name="icon_small">24dp</dimen>
+    <dimen name="icon_medium">48dp</dimen>
+    <dimen name="icon_large">72dp</dimen>
+    <dimen name="icon_xlarge">96dp</dimen>
+    
+    <!-- Card sizes -->
+    <dimen name="card_elevation">4dp</dimen>
+    <dimen name="card_corner_radius">16dp</dimen>
+    
+    <!-- Game element sizes -->
+    <dimen name="game_item_size">80dp</dimen>
+    <dimen name="game_item_margin">12dp</dimen>
+</resources>
